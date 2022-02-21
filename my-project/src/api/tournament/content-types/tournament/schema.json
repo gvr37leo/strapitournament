@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tournaments",
+  "info": {
+    "singularName": "tournament",
+    "pluralName": "tournaments",
+    "displayName": "Tournament",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "matches": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::match.match",
+      "mappedBy": "tournament"
+    },
+    "tournament_signups": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tournament-signup.tournament-signup",
+      "mappedBy": "tournament"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "title": {
+      "type": "string"
+    },
+    "startsat": {
+      "type": "datetime"
+    }
+  }
+}

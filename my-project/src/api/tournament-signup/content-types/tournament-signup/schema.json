@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tournament_signups",
+  "info": {
+    "singularName": "tournament-signup",
+    "pluralName": "tournament-signups",
+    "displayName": "TournamentSignup",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "tournament": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tournament.tournament",
+      "inversedBy": "tournament_signups"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "tournament_signups"
+    },
+    "checkedin": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

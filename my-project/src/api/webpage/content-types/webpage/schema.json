@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "webpages",
+  "info": {
+    "singularName": "webpage",
+    "pluralName": "webpages",
+    "displayName": "Webpage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "banner": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "content": {
+      "type": "richtext"
+    }
+  }
+}
