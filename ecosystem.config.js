@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'strapi',
-      cwd: './my-project',
+      cwd: '/strapitournament/my-project',
       script: 'npm',
       args: 'run develop',
       // env: {
@@ -15,7 +15,7 @@ module.exports = {
       // },
     },{
       name: 'frontend',
-      cwd: './frontend',
+      cwd: '/strapitournament/frontend',
       script: 'npm',
       args: 'run start',
     },
