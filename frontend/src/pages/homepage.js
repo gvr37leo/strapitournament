@@ -148,7 +148,7 @@ export default class Homepage extends React.Component{
 
 
 async function get(type){
-    var res = await fetch(`http://localhost:1337/api/${type}`)
+    var res = await fetch(`http://64.225.54.10:1337/api/${type}`)
     var data = await res.json()
     return data
 }
