@@ -18,6 +18,10 @@ module.exports = {
       cwd: '/strapitournament/frontend',
       script: 'npm',
       args: 'run start',
-    },
+    },{
+      name: 'webhook',
+      cwd: '/strapitournament',
+      script: 'webhook.js'
+    }
   ],
 };

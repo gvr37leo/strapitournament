@@ -1,6 +1,6 @@
 // https://docs.strapi.io/developer-docs/latest/setup-deployment-guides/deployment/hosting-guides/digitalocean.html
 var secret = 'cucumber';
-var repo = '~/path-to-your-repo/';
+var repo = '/strapitournament';
 
 const http = require('http');
 const crypto = require('crypto');
@@ -33,3 +33,5 @@ http
     res.end();
   })
   .listen(8080);
+
+  console.log('listening for pull requests on 8080')
