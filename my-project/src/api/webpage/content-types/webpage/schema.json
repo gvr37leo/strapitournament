@@ -4,7 +4,8 @@
   "info": {
     "singularName": "webpage",
     "pluralName": "webpages",
-    "displayName": "Webpage"
+    "displayName": "Webpage",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -15,16 +16,29 @@
       "type": "string"
     },
     "banner": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "content": {
       "type": "richtext"
+    },
+    "parent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::webpage.webpage",
+      "inversedBy": "children"
+    },
+    "children": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::webpage.webpage",
+      "mappedBy": "parent"
     }
   }
 }

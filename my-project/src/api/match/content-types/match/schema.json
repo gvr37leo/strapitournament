@@ -8,13 +8,10 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "Description": {
-      "type": "richtext"
-    },
     "player1": {
       "type": "relation",
       "relation": "manyToOne",
@@ -54,6 +51,9 @@
     "scoreReported": {
       "type": "boolean",
       "default": false
+    },
+    "depth": {
+      "type": "integer"
     }
   }
 }

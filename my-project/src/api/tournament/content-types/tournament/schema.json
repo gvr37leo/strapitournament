@@ -32,6 +32,27 @@
     },
     "startsat": {
       "type": "datetime"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ]
+    },
+    "ExternaltournamentLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "socialmedia.url"
+    },
+    "rounddescription": {
+      "displayName": "text",
+      "type": "component",
+      "repeatable": true,
+      "component": "socialmedia.text"
     }
   }
 }

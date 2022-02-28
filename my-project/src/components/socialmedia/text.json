@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_socialmedia_texts",
+  "info": {
+    "displayName": "text",
+    "icon": "align-center"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    }
+  }
+}
