@@ -7,13 +7,14 @@
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "strapi": "strapi"
+    "strapi": "strapi",
+    "debug": "node --inspect=127.0.0.1:9229 ./node_modules/strapi/bin/strapi.js develop"
   },
   "devDependencies": {},
   "dependencies": {
-    "@strapi/strapi": "4.0.5",
-    "@strapi/plugin-users-permissions": "4.0.5",
-    "@strapi/plugin-i18n": "4.0.5",
+    "@strapi/plugin-i18n": "4.0.7",
+    "@strapi/plugin-users-permissions": "4.0.7",
+    "@strapi/strapi": "4.0.7",
     "sqlite3": "5.0.2"
   },
   "author": {

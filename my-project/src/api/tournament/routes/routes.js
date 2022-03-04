@@ -12,6 +12,15 @@ module.exports = {
       method: 'POST',
       path: '/generatebracket',
       handler: 'tournament.generatebracket',
+    },{
+      method: 'POST',
+      path: '/reportscore',
+      handler: 'tournament.reportscore',
+    },
+    {
+      method: 'POST',
+      path: '/test',
+      handler: 'tournament.test',
     },
   ]
 }

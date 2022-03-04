@@ -22,11 +22,6 @@
         "videos"
       ]
     },
-    "highlightedWebpages": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::webpage.webpage"
-    },
     "pagebackground": {
       "type": "media",
       "multiple": false,

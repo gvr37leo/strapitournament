@@ -1,5 +1,5 @@
 import React from 'react';
-import {get, getHost, isLoggedIn} from '../pages/utils'
+import {get, getHost, getLoggedInUser, isLoggedIn} from '../pages/utils'
 
 export default class Header extends React.Component{
 
@@ -73,21 +73,39 @@ export default class Header extends React.Component{
                     </ul>
                     <div style={{"display":"flex","justifyContent":"space-around"}}>
                         {this.state.homepage.attributes.socialmedia.map((sm,i) => {
-                            return <a key={i} target="_blank" style={{'marginRight':'10px'}} href={sm.url}><img height="50" src="@item.Image?.Url()"/></a>
+                            return <a key={i} target="_blank" style={{'marginRight':'10px'}} href={sm.url}><img height="50" src={getHost() + sm.image?.data?.attributes?.url}/></a>
                         })}
                     </div>
                     {(() => {
                         if(isLoggedIn()){
                         
                             return <React.Fragment>
-                                <div style={{"marginRight":"10px"}}>Welcome <a href="/member-edit"><b>username</b></a></div>
+                                <div style={{"marginRight":"10px"}}>Welcome <a href="/member-edit"><b>{getLoggedInUser().user.username}</b></a></div>
                                 <button onClick={() => {
-                                    console.log('logout')
-                                }} type="submit" className="btn btn-primary">Log out</button>
+                                    localStorage.removeItem('logindata')
+                                    location.reload()
+                                }} type="button" className="btn btn-primary">Log out</button>
                             </React.Fragment>
                         }else{
                             return <form className="d-flex">
-                                <a href="/login" style={{"marginRight":"10px"}} className="btn btn-primary" >Login</a>
+                                <a href={`${getHost()}/api/connect/discord`} className="btn btn-primary">login with discord</a>
+                                <button type='button' onClick={() => {
+                                    fetch(`${getHost()}/api/auth/local`,{
+                                        method:'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body:JSON.stringify({
+                                            identifier:'piet@gmail.com',
+                                            password:'$RF5tg^YH',
+                                        })
+                                    })
+                                    .then(res => res.json())
+                                    .then((data) => {
+                                        localStorage.setItem('logindata',JSON.stringify(data))
+                                        console.log(data)
+                                    })
+                                }} href="/login" style={{"marginRight":"10px"}} className="btn btn-primary" >Login</button>
                                 <a href="/register" className="btn btn-primary" >Signup</a>
                             </form>
                         }

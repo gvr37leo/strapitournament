@@ -1,4 +1,5 @@
 /* global $ */
+import {host} from '../env'
 
 export async function get(type,parameters){
     var querystring = $.param(parameters)
@@ -9,16 +10,14 @@ export async function get(type,parameters){
 }
 
 export function isLoggedIn(){
-    return false
+    return localStorage.getItem('logindata') != null
 }
 
 export function getLoggedInUser(){
-
+    return JSON.parse(localStorage.getItem('logindata'))
 }
-
 export function getHost(){
-    // return 'http://64.225.54.10:1337'
-    return 'http://localhost:1337'
+    return host
 }
 
 export function orderUsers(users,matches){
@@ -31,7 +30,7 @@ export function orderUsers(users,matches){
         userdict[user.id] = user
     }
 
-    for(var match of matches){
+    for(var match of matches.filter(m => m.scoreReported == true)){
         var istournywin = match.attributes.depth == 0 ? 1 : 0
         if(match.attributes.score1 > match.attributes.score2){
             userdict[match.attributes.player1.data.id].wins++

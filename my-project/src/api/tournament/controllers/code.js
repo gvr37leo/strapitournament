@@ -27,7 +27,7 @@
 //     Services.ContentService.SaveAndPublish(signupcontent);
 //     //Ok("sign up succesfull");
 //     //Caching.refresh($"signedupplayers:{tournament.Id}");
-//     return RedirectToCurrentUmbracoPage(); 
+//     return RedirectToCurrentUmbracoPage();
 // }
 
 // public IActionResult CheckinTournament(int tournamentid, string memberguid) {
@@ -37,7 +37,7 @@
 //     var signupnode = signups.FirstOrDefault(s => s?.Player?.Key == member?.Key);
 //     if(DateTime.Now < (tournament.StartsAt - TimeSpan.FromHours(1))) {
 //         return BadRequest($"checkins havent started yet, checkin will open at {tournament.StartsAt - TimeSpan.FromHours(1)}");
-//     }
+//     }  
 
 //     if(signupnode == null) {
 //         return BadRequest("not yet signed up");
@@ -94,7 +94,7 @@
 //         matchesnode = tournament.FirstChild<Matches>();
 //     }
 
-    
+
 
 
 //     //var x = UmbracoContext.Content.GetById(tournamentid).Descendants<TournamentSignup>().FirstOrDefault();
@@ -105,7 +105,7 @@
 //     generateMatchTree(null, signedupmembers.Count, signedupmembers, ref playeri, Services.ContentService.GetById(tournamentid), generatedMatches, ref matchcounter,0, matchesnode.Key);
 
 //     var ipubmatches = generatedMatches.Select(m => UmbracoContext.Content.GetById(m.Id) as Match).ToList();
-    
+
 //     return Ok(SerializeMatches(ipubmatches));
 // }
 
