@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {get,getHost} from './utils'
 
 export default function Profile(){
@@ -8,22 +8,59 @@ export default function Profile(){
 	var params = useParams()
 
     useEffect(() => {
-        get(`users/${params.id}`,{populate:'*'}).then((res) => {
-            
+
+
+        fetch(`${getHost()}/api/getUserWithMatches`,{
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({
+                userid:params.id,
+            })
+        }).then(res => res.json())
+        .then((data) => {
             setState({
-                user:res.data,
+                loaded:true,
+                user:data,
+                matches:data.matches1.concat(data.matches2)
             })
         })
     },[])
 
     if(state.loaded == false)return <div>loading</div>
 
-    return <div>
-        <h1>@member.Name</h1>
-        <div>wins @wins</div>
-        <div>losses @(matches.Count() - wins)</div>
+    var tournywins = 0
+    var wins = 0
+    var losses = 0
+    var draws = 0
+    for(var match of state.matches.filter(m => m.scoreReported == true)){
+        if(match.score1 == match.score2){
+            draws++
+            continue
+        }else{
+            var winnerid = match.player1.id
+            if(match.score2 > match.score1){
+                winnerid = match.player2.id
+            }
+            if(winnerid == params.id){
+                wins++
+                if(match.depth == 0){
+                    tournywins++
+                }
+            }else{
+                losses++
+            }
+        }
 
-        <table style={{'margin-top':'20px;'}} className="table table-light table-bordered">
+    }
+
+    return <div style={{color:'white'}}>
+        <h1>{state.user.username}</h1>
+        <div>wins {wins}</div>
+        <div>losses {losses}</div>
+
+        <table style={{'marginTop':'20px'}} className="table table-light table-bordered">
             <thead>
                 <tr>
                     <th>player1</th>
@@ -34,62 +71,25 @@ export default function Profile(){
                 </tr>
             </thead>
             <tbody>
-                {state.user.matches1.map(match => {
-                    
+                {state.matches.map(match => {
                     var winner = null;
-                    if (match.Score2 > match.Score1) {
-                        winner = match.Player2;
-                    }else if (match.Score1 > match.Score2) {
-                        winner = match.Player1;
+                    if (match.score2 > match.score1) {
+                        winner = match.player2;
+                    }else if (match.score1 > match.score2) {
+                        winner = match.player1;
                     }
-                    return <tr className={winner?.Id == this.member?.Id ? "table-success" : "table-danger"}>
-                        <td><a href="/player-profile?playerid=@match.Player1?.Id">@match.Player1?.Name</a></td>
-                        <td>@match.Score1</td>
-                        <td><a href="/player-profile?playerid=@match.Player2?.Id">@match.Player2?.Name</a></td>
-                        <td>@match.Score2</td>
-                        <td>@match.CreateDate.ToShortDateString()</td>
+                    return <tr key={match.id} className={winner?.id == params.id ? "table-success" : "table-danger"}>
+                        <td><Link to={`/profile/${match.player1.id}`}>{match.player1.username}</Link></td>
+                        <td>{match.score1}</td>
+                        <td><Link to={`/profile/${match.player2.id}`}>{match.player2.username}</Link></td>
+                        
+                        <td>{match.score2}</td>
+                        <td>{new Date(match.createdAt).toLocaleString()}</td>
                     </tr>
                 })}
             </tbody>
         </table>
     </div>
 }
-
-class asd extends React.Component{
-
-    constructor(){
-
-    }
-
-    componentDidMount(){
-
-        
-
-        // 	Layout = "master.cshtml";
-        // 	var Request = HttpContextAccessor.HttpContext.Request;
-        // 	int playerid = int.Parse(Request.Query["playerid"]);
-        // 	var matches = Umbraco.AssignedContentItem.Root().Descendants<Match>();
-        // 	var member = MemberService.GetById(playerid);
-
-        // 	matches = matches.Where(m => m.Player1?.Id == playerid || m.Player2?.Id == playerid).OrderByDescending(m => m.CreateDate);
-
-        // 	var wins = matches.Count(m => {
-        // 		if(m.Score1 == m.Score2){
-        // 			return false;
-        // 		}
-        // 		var winner = m.Player1;
-        // 		if(m.Score2 > m.Score1) {
-        // 			winner = m.Player2;
-        // 		}
-        // 		return winner.Id == member.Id;
-        // 	});        
-    }
-
-    render(){
-        
-    }
-}
-
-
 
 	

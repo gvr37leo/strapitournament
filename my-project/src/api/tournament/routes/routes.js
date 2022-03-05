@@ -16,11 +16,15 @@ module.exports = {
       method: 'POST',
       path: '/reportscore',
       handler: 'tournament.reportscore',
-    },
-    {
+    },{
       method: 'POST',
       path: '/test',
       handler: 'tournament.test',
+    },{
+      method: 'POST',
+      path: '/getUserWithMatches',
+      handler: 'tournament.getUserWithMatches',
     },
+
   ]
 }

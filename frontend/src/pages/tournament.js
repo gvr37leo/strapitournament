@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {get,isLoggedIn,getLoggedInUser, getHost} from './utils'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 // https://staxmanade.com/CssToReact/
 // https://www.youtube.com/watch?v=vGtVSwpOlsM  oath
@@ -124,7 +124,7 @@ export default function Tournament(){
 							</thead>
 							<tbody>
 								{state.tournament.attributes.tournament_signups.data.map((signup,i) => <tr key={i}>
-									<td><a href={`/profile/${signup.attributes.users_permissions_user.data.id}`}>{signup.attributes.users_permissions_user.data.attributes.username}</a></td>
+									<td><Link to={`/profile/${signup.attributes.users_permissions_user.data.id}`}>{signup.attributes.users_permissions_user.data.attributes.username}</Link></td>
 									<td>{signup.attributes.checkedin ? "yes" : "no"}</td>
 								</tr>)}
 							</tbody>

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {get,getHost, orderUsers} from './utils'
 // import ReactDOM from 'react-dom';
 
@@ -45,12 +46,12 @@ export default function Homepage(){
                                 {
                                     state.webpages.map((webpage,i) => {
                                         return <div key={i} style={{"maxHeight":"300px"}} className={`carousel-item  ${i == 0 ? 'active' : ''}`}>
-                                            <a href={`/webpage/${webpage.id}`}>
+                                            <Link to={`/webpage/${webpage.id}`}>
                                                 <img style={{"maxHeight":"300px","objectFit":"cover","borderRadius":"3px"}} src={getHost() + webpage.attributes.banner.data.attributes.url} className="d-block w-100" alt="..."/>
                                                 <div className="carousel-caption d-none d-md-block">
                                                     <h5 style={{"textShadow":"0px 0px 6px #000000"}}>{webpage.attributes.title}</h5>
                                                 </div>
-                                            </a>
+                                            </Link>
                                         </div>
                                     })
                                 }
@@ -79,7 +80,7 @@ export default function Homepage(){
                                     return <div key={i} className="card" style={{"flexGrow":"1","width":"18rem","margin":"0 10px 10px 0px","boxShadow":"0px 8px 8px 5px #0000006b"}}>
                                         <img src={getHost() + tournament.attributes.image?.data?.attributes?.url} className="card-img-top" alt="..."/>
                                         <div className="card-body">
-                                            <a href={`/tournament/${tournament.id}`}><h5 className="card-title">{tournament.attributes.title}</h5></a>
+                                            <Link to={`/tournament/${tournament.id}`}><h5 className="card-title">{tournament.attributes.title}</h5></Link>
                                             <div>{new Date(tournament.attributes.startsat).toLocaleString()}</div>
                                                 {(() => {
                                                     if (tournament.attributes.ExternaltournamentLink == null) {
@@ -115,7 +116,7 @@ export default function Homepage(){
                             return state.users.map((user,i) => {
                                 return <tr key={i}>
                                     <td scope="row"><b>{i + 1}</b></td>
-                                    <td><a href={`/profile/${user.id}`}>{user.username}</a></td>
+                                    <td><Link to={`/profile/${user.id}`}>{user.username}</Link></td>
                                     <td>{user.tournywins}</td>
                                     <td>{user.wins}</td>
                                     <td>{user.losses}</td>

@@ -203,6 +203,22 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
 
   },
 
+  async getUserWithMatches(ctx){
+    var userid = ctx.request.body.userid
+    var user = await strapi.entityService.findOne('plugin::users-permissions.user',userid,{
+      populate:[
+        'matches1',
+        'matches1.player1',
+        'matches1.player2',
+        'matches2',
+        'matches2.player1',
+        'matches2.player2',
+      ],
+    })
+    ctx.response.body = user
+    return
+  },
+
   async test(ctx) {
     ctx.body = 'Hello World!';
   },

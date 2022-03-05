@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {get, getHost, getLoggedInUser, isLoggedIn} from '../pages/utils'
 
 export default class Header extends React.Component{
@@ -35,32 +36,32 @@ export default class Header extends React.Component{
 
         return <nav style={{"boxShadow":"0px 8px 8px 5px #0000006b","backgroundSize":"contain","backgroundImage":`url('${getHost() + this.state?.homepage?.attributes?.navigationbar?.data?.attributes?.url}')`}} className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
-                <a className="navbar-brand" href="/">
+                <Link className="navbar-brand" to={"/"}>
                     <img src={getHost() + this.state?.homepage?.attributes?.logo?.data?.attributes?.url} width="30" height="30" alt=""/>
-                </a>
+                </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <a style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" href="/tournament">Tournaments</a>
+                            <Link style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" to="/tournament">Tournaments</Link>
                         </li>
                         <li className="nav-item">
-                            <a style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" href="/leaderboard">leaderboard</a>
+                            <Link style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" to="/leaderboard">leaderboard</Link>
                         </li>
                         {(() => {
                             return this.state.webpages.filter(w => w.attributes.parent.data == null).map(webpage => {
                                 if(webpage.attributes.children.data.length == 0){
                                     return <li key={webpage.id} className="nav-item">
-                                        <a style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" href={`/webpage/${webpage.id}`}>{webpage.attributes.title}</a>
+                                        <Link style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" to={`/webpage/${webpage.id}`}>{webpage.attributes.title}</Link>
                                     </li>
                                 }else{
                                     return <li key={webpage.id} className="nav-item dropdown">
-                                        <a style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" href={`/webpage/${webpage.id}`}>{webpage.attributes.title}</a>
+                                        <Link style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" to={`/webpage/${webpage.id}`}>{webpage.attributes.title}</Link>
                                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                             {webpage.attributes.children.data.map(child => {
-                                                return <li key={child.id}><a className="dropdown-item" href={`/webpage/${child.id}`}>{child.attributes.title}</a></li>
+                                                return <li key={child.id}><Link className="dropdown-item" to={`/webpage/${child.id}`}>{child.attributes.title}</Link></li>
                                             })}
                                         </ul>
                                         
