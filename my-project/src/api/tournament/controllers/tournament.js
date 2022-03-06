@@ -16,9 +16,9 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::tournament.tournament',({strapi}) => ({
   async signup(ctx){
-    var tournamentid = ctx.request.body.tournamentid
-    var memberid = ctx.request.body.memberid
 
+    var tournamentid = ctx.request.body.tournamentid
+    var memberid = ctx.state.user.id
     var user = await strapi.entityService.findOne('plugin::users-permissions.user',memberid,{
       fields: ['*'],
       populate:[
@@ -53,7 +53,7 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
   },
 
   async checkin(ctx){
-    var userid = ctx.request.body.userid
+    var userid = ctx.state.user.id
     var tournamentid = ctx.request.body.tournamentid
 
     var tournament = await strapi.entityService.findOne('api::tournament.tournament',tournamentid,{
@@ -121,7 +121,6 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
   },
 
   async generatebracket(ctx) {
-
     var tournamentid = ctx.request.body.tournamentid
 
     var tournament = await strapi.entityService.findOne('api::tournament.tournament',tournamentid,{
@@ -146,7 +145,7 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
   async reportscore(ctx){
 
     var matchid = ctx.request.body.matchid
-    var userid = ctx.request.body.userid
+    var userid = ctx.state.user.id
     var score1 = ctx.request.body.score1
     var score2 = ctx.request.body.score2
 
@@ -217,6 +216,24 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
     })
     ctx.response.body = user
     return
+  },
+
+  async getUserWithRole(ctx){
+    var userid = ctx.request.body.userid
+    var user = await strapi.entityService.findOne('plugin::users-permissions.user',userid,{
+      populate:[
+        'role',
+      ],
+    })
+    ctx.response.body = user
+    return
+  },
+
+  async getHomePageData(){
+    //tournaments filtered and sorted by startat and get their signup count
+    //webpages sorted by updatedate
+    //sorted and top 15 users by their match wins
+
   },
 
   async test(ctx) {

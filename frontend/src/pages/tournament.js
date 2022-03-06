@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {get,isLoggedIn,getLoggedInUser, getHost} from './utils'
+import {get,isLoggedIn,getLoggedInUser, getHost, getCustom} from './utils'
 import { Link, useParams } from 'react-router-dom'
 
 // https://staxmanade.com/CssToReact/
@@ -7,13 +7,17 @@ import { Link, useParams } from 'react-router-dom'
 
 export default function Tournament(){
 
-	var [state,setState] = useState({loaded:false})
+	var [state,setState] = useState({loaded:false,isAdmin:false})
 
 	var params = useParams()
 	
 
 	useEffect(() => {
-		get(`tournaments/${params.id}`,{populate:[
+		if(isLoggedIn()){
+			
+		}
+		Promise.all([
+			get(`tournaments/${params.id}`,{populate:[
 			'tournament_signups',
 			'matches',
 			'matches.player1',
@@ -22,11 +26,14 @@ export default function Tournament(){
 			'tournament_signups.users_permissions_user',
 			'rounddescription',
 			'image',
-		]}).then((data) => {
+			]}),
+			isLoggedIn() ? getCustom('getUserWithRole',{userid:getLoggedInUser().user.id}) : null
+		]).then(([data1,data2]) => {
 			setState({
 				loaded:true,
+				isAdmin:data2?.role?.name == 'admin',
 				homepage:homepagedata.data,
-				tournament:data.data,
+				tournament:data1.data,
 			}) 
 		})
     },[])
@@ -52,22 +59,21 @@ export default function Tournament(){
 					<div>tournament starts at {new Date(state.tournament.attributes.startsat).toLocaleString()}</div>
 					<div>checkins begin at {new Date(new Date(state.tournament.attributes.startsat) - 3600 * 1000).toLocaleString()}</div>
 
-					<button type="button" onClick={(e) => {
-						e.target.disabled = true
-						//tournamentid loggedinmemberid
-						fetch(`${getHost()}/api/generatebracket`,{
-							method:'POST',
-							headers: {
-								'Content-Type': 'application/json'
-							},
-							body:JSON.stringify({
-								tournamentid:1,
-							})
-						}).finally(() => {
-							e.target.disabled = false
-							// location.reload()
-						})
-					}} className="btn btn-primary">generate bracket</button>
+					{(() => {
+						if(state.isAdmin){
+							return <button type="button" onClick={(e) => {
+								e.target.disabled = true
+								//tournamentid loggedinmemberid
+								getCustom('generatebracket',{
+									tournamentid:state.tournament.id,
+								}).finally(() => {
+									e.target.disabled = false
+									location.reload()
+								})
+							}} className="btn btn-primary">generate bracket</button>
+						}
+					})()}
+					
 
 					{signupcheckinbutton(state)}
 					{(() => {
@@ -75,7 +81,7 @@ export default function Tournament(){
 							<a href={state.tournament.attributes.ExternalTournamentLink}><h1>{state.tournament.attributes.ExternalTournamentLink}</h1></a>
 						}
 					})()}
-					<div style={{"margin":"10px","padding":"10px","border":"1px solid black","borderRadius":"3px"}}>{state.tournament.attributes.description}</div>
+					<div className='ck-content' style={{"margin":"10px","padding":"10px","border":"1px solid black","borderRadius":"3px"}} dangerouslySetInnerHTML={{__html:state.tournament.attributes.description}}></div>
 				</div>
 		
 		
@@ -169,17 +175,10 @@ function renderCard(match,state) {
 						<input id="inputscore2"placeholder={match.attributes.player2.data.attributes.username} type="number" name="score2"/>
 						<button onClick={(e) => {
 							e.target.disabled = true
-							fetch(`${getHost()}/api/reportscore`,{
-								method:'POST',
-								headers: {
-									'Content-Type': 'application/json'
-								},
-								body:JSON.stringify({
-									userid:user.id,
-									matchid:match.id,
-									score1:inputscore1.valueAsNumber,
-									score2:inputscore2.valueAsNumber,
-								})
+							getCustom('reportscore',{
+								matchid:match.id,
+								score1:inputscore1.valueAsNumber,
+								score2:inputscore2.valueAsNumber,
 							}).finally(() => {
 								e.target.disabled = false
 								location.reload()
@@ -214,20 +213,11 @@ function signupcheckinbutton(state){
 				return <button type="submit" onClick={(e) => {
 					e.target.disabled = true
 					//tournamentid loggedinmemberid
-					fetch(`${getHost()}/api/signup`,{
-						method:'POST',
-						headers: {
-							'Content-Type': 'application/json'
-						},
-						body:JSON.stringify({
-							memberid:1,
-							tournamentid:1,
-						})
-					}).finally(() => {
+					getCustom('signup',{tournamentid:state.tournament.id})
+					.finally(() => {
 						e.target.disabled = false
 						location.reload()
 					})
-					console.log('signup')
 				}} className="btn btn-primary">Sign up for tournament</button>
 			} else {
 				if (signup.attributes.checkedin) {
@@ -236,21 +226,11 @@ function signupcheckinbutton(state){
 					if(Date.now() >= new Date(state.tournament.attributes.startsat) - 3600 * 1000){
 						return <button type="submit" onClick={(e) => {
 							e.target.disabled = true
-							fetch(`${getHost()}/api/checkin`,{
-								method:'POST',
-								headers: {
-									'Content-Type': 'application/json'
-								},
-								body:JSON.stringify({
-									userid:1,
-									tournamentid:1,
-								})
-							}).finally(() => {
+							getCustom('checkin',{tournamentid:state.tournament.id})
+							.finally(() => {
 								e.target.disabled = false
 								location.reload()
 							})
-							//tournament id loggedinmemberid
-							console.log('checkin')
 						}} className="btn btn-primary">Check in for tournament</button>
 					}else{
 						return <div>checkins havent started yet</div>

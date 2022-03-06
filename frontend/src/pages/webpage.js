@@ -40,7 +40,7 @@ export default function Webpage(){
                 "boxShadow": "black 0px 5px 9px 2px"
             }}>
                 <h1>{state.webpage.attributes.title}</h1>
-                {state.webpage.attributes.content}
+                <div dangerouslySetInnerHTML={{__html:state.webpage.attributes.content}}></div>
             </div>
         </div>
     </div>

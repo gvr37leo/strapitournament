@@ -9,6 +9,21 @@ export async function get(type,parameters){
     return data
 }
 
+export async function getCustom(url,body){
+    
+    var headers = {
+        'Content-Type': 'application/json'
+    }
+    if(isLoggedIn()){
+        headers.Authorization = `Bearer ${getLoggedInUser().jwt}`
+    }
+    return fetch(`${getHost()}/api/${url}`,{
+        method:'POST',
+        headers: headers,
+        body:JSON.stringify(body)
+    }).then(res => res.json())
+}
+
 export function isLoggedIn(){
     return localStorage.getItem('logindata') != null
 }

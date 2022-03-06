@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {get, getHost} from './utils'
 
 export default class Tournaments extends React.Component{
@@ -27,13 +28,13 @@ export default class Tournaments extends React.Component{
 			<h1>Tournaments</h1>
 			<div style={{"display":"flex","flexWrap":"wrap"}}>
 				{this.state.tournaments.map(tournament => 
-					<a key={tournament.id} href={`/tournament/${tournament.id}`}>
+					<Link key={tournament.id} to={`/tournament/${tournament.id}`}>
 						<div style={{"background":"white","color":"black","padding":"10px","margin":"10px","borderRadius":"3px","border":"1px solid black"}}>
 							<div>{tournament.Name}</div>
 							<img style={{"maxWidth":"300px"}} src={getHost() + tournament?.attributes?.image?.data?.attributes?.url}></img>
 							<p>{tournament.attributes.startsat}</p>
 						</div>
-					</a>
+					</Link>
 				)}
 			</div>
 		</div>

@@ -24,6 +24,10 @@ module.exports = {
       method: 'POST',
       path: '/getUserWithMatches',
       handler: 'tournament.getUserWithMatches',
+    },{
+      method: 'POST',
+      path: '/getUserWithRole',
+      handler: 'tournament.getUserWithRole',
     },
 
   ]

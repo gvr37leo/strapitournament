@@ -90,7 +90,7 @@ export default class Header extends React.Component{
                         }else{
                             return <form className="d-flex">
                                 <a href={`${getHost()}/api/connect/discord`} className="btn btn-primary">login with discord</a>
-                                <button type='button' onClick={() => {
+                                {/* <button type='button' onClick={() => {
                                     fetch(`${getHost()}/api/auth/local`,{
                                         method:'POST',
                                         headers: {
@@ -107,7 +107,7 @@ export default class Header extends React.Component{
                                         console.log(data)
                                     })
                                 }} href="/login" style={{"marginRight":"10px"}} className="btn btn-primary" >Login</button>
-                                <a href="/register" className="btn btn-primary" >Signup</a>
+                                <a href="/register" className="btn btn-primary" >Signup</a> */}
                             </form>
                         }
                     })()}

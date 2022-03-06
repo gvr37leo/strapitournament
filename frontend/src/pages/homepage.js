@@ -68,7 +68,7 @@ export default function Homepage(){
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col" style={{"display":"flex","flexWrap":"wrap","color":"black"}}>
+                        <div className="col" style={{"display":"flex","flexWrap":"wrap","color":"black", "gap":'10px 30px'}}>
 
                             {(() => {
                                 return state.tournaments
@@ -77,7 +77,7 @@ export default function Homepage(){
                                 })
                                 .sort((a,b) => new Date(a.attributes.startsat) - new Date(b.attributes.startsat))
                                 .map((tournament,i) => {
-                                    return <div key={i} className="card" style={{"flexGrow":"1","width":"18rem","margin":"0 10px 10px 0px","boxShadow":"0px 8px 8px 5px #0000006b"}}>
+                                    return <div key={i} className="card" style={{"flexGrow":"1","width":"18rem","boxShadow":"0px 8px 8px 5px #0000006b"}}>
                                         <img src={getHost() + tournament.attributes.image?.data?.attributes?.url} className="card-img-top" alt="..."/>
                                         <div className="card-body">
                                             <Link to={`/tournament/${tournament.id}`}><h5 className="card-title">{tournament.attributes.title}</h5></Link>
