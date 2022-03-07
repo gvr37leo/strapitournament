@@ -9,11 +9,22 @@ export default class Leaderboard extends React.Component{
         this.state = {
             loaded:false
         }
+        this.input = React.createRef()
+        this.searchdata = ''
 	}
 
 	componentDidMount(){
+        this.refetch()
+	}
 
-        Promise.all([get('matches',{populate:'*'}),get('users')]).then((res) => {
+    refetch(){
+        Promise.all([get('matches',{populate:'*'}),get('users',{
+            filters:{
+                username:{
+                    $containsi:this.searchdata
+                }
+            }
+        })]).then((res) => {
             var [matches,users] = res
             this.setState({
                 loaded:true,
@@ -22,13 +33,7 @@ export default class Leaderboard extends React.Component{
             })
             console.log(res)
         })
-
-        	// Layout = "master.cshtml";
-        	// var Request = HttpContextAccessor.HttpContext.Request;
-
-        	// var orderedplayers = Functions.GetOrderedPlayers(MemberService,Umbraco);
-        	// orderedplayers = orderedplayers.Where(t => t.player.Name.ToLower().Contains(Request.Query["search"].ToString().ToLower())).ToList();	
-	}
+    }
 
     render(){
         if(this.state.loaded == false)return <div>loading</div>
@@ -38,9 +43,10 @@ export default class Leaderboard extends React.Component{
             <div style={{margin:'10px'}}>
                 <form className="form-inline">
                     <div>
-                        <input name="search" />
+                        <input ref={this.input} name="search" />
                         <button onClick={() => {
-                            console.log('search')
+                            this.searchdata = this.input.current.value
+                            this.refetch()
                         }} className="btn btn-primary" type="button">search</button>
                     </div>
                     

@@ -28,7 +28,14 @@ module.exports = {
       method: 'POST',
       path: '/getUserWithRole',
       handler: 'tournament.getUserWithRole',
+    },{
+      method: 'POST',
+      path: '/getHomePageData',
+      handler: 'tournament.getHomePageData',
     },
+
+
+
 
   ]
 }

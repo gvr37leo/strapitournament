@@ -19,7 +19,7 @@ http
           .digest('hex');
 
       if (req.headers['x-hub-signature'] == sig) {
-        exec(`cd ${repo} && git pull && ${PM2_CMD}`, (error, stdout, stderr) => {
+        exec(`cd ${repo} && git pull`, (error, stdout, stderr) => {// && ${PM2_CMD}
           if (error) {
             console.error(`exec error: ${error}`);
             return;

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {get,getHost, orderUsers} from './utils'
+import {get,getCustom,getHost, orderUsers} from './utils'
 // import ReactDOM from 'react-dom';
 
 export default function Homepage(){
@@ -8,15 +8,11 @@ export default function Homepage(){
     var [state,setState] = React.useState({loaded:false})
 
     useEffect(() => {
-        Promise.all([get('matches',{populate:'*'}),get('webpages',{populate:'*'}),get('tournaments',{populate:'*'}),get('users')]).then((res) => {
-            var [matches,webpages,tournaments,users] = res
+        getCustom('getHomePageData',{}).then(data => {
             setState({
                 loaded:true,
-                matches:matches.data,
-                webpages:webpages.data,
-                tournaments:tournaments.data,
                 homepage:homepagedata.data,
-                users:users
+                ...data,
             })
         })
     },[])
@@ -47,9 +43,9 @@ export default function Homepage(){
                                     state.webpages.map((webpage,i) => {
                                         return <div key={i} style={{"maxHeight":"300px"}} className={`carousel-item  ${i == 0 ? 'active' : ''}`}>
                                             <Link to={`/webpage/${webpage.id}`}>
-                                                <img style={{"maxHeight":"300px","objectFit":"cover","borderRadius":"3px"}} src={getHost() + webpage.attributes.banner.data.attributes.url} className="d-block w-100" alt="..."/>
+                                                <img style={{"maxHeight":"300px","objectFit":"cover","borderRadius":"3px"}} src={getHost() + webpage.banner.url} className="d-block w-100" alt="..."/>
                                                 <div className="carousel-caption d-none d-md-block">
-                                                    <h5 style={{"textShadow":"0px 0px 6px #000000"}}>{webpage.attributes.title}</h5>
+                                                    <h5 style={{"textShadow":"0px 0px 6px #000000"}}>{webpage.title}</h5>
                                                 </div>
                                             </Link>
                                         </div>
@@ -72,19 +68,19 @@ export default function Homepage(){
 
                             {(() => {
                                 return state.tournaments
-                                .filter(t => {
-                                    return new Date(t.attributes.startsat).getTime() + 24 * 3600 * 1000 >= Date.now()
-                                })
-                                .sort((a,b) => new Date(a.attributes.startsat) - new Date(b.attributes.startsat))
+                                // .filter(t => {
+                                //     return new Date(t.startsat).getTime() + 24 * 3600 * 1000 >= Date.now()
+                                // })
+                                // .sort((a,b) => new Date(a.attributes.startsat) - new Date(b.attributes.startsat))
                                 .map((tournament,i) => {
                                     return <div key={i} className="card" style={{"flexGrow":"1","width":"18rem","boxShadow":"0px 8px 8px 5px #0000006b"}}>
-                                        <img src={getHost() + tournament.attributes.image?.data?.attributes?.url} className="card-img-top" alt="..."/>
+                                        <img src={getHost() + tournament.image?.url} className="card-img-top" alt="..."/>
                                         <div className="card-body">
-                                            <Link to={`/tournament/${tournament.id}`}><h5 className="card-title">{tournament.attributes.title}</h5></Link>
-                                            <div>{new Date(tournament.attributes.startsat).toLocaleString()}</div>
+                                            <Link to={`/tournament/${tournament.id}`}><h5 className="card-title">{tournament.title}</h5></Link>
+                                            <div>{new Date(tournament.startsat).toLocaleString()}</div>
                                                 {(() => {
-                                                    if (tournament.attributes.ExternaltournamentLink == null) {
-                                                        return <div>{0} people signed up</div>	
+                                                    if (tournament.ExternaltournamentLink == null) {
+                                                        return <div>{tournament.signupcount} people signed up</div>	
                                                     }
                                                 })()}
                                         </div>
@@ -112,7 +108,7 @@ export default function Homepage(){
                     </thead>
                     <tbody>
                         {(() => {
-                            orderUsers(state.users,state.matches)
+                            // orderUsers(state.users,state.matches)
                             return state.users.map((user,i) => {
                                 return <tr key={i}>
                                     <td scope="row"><b>{i + 1}</b></td>

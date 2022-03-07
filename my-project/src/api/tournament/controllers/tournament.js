@@ -229,11 +229,52 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
     return
   },
 
-  async getHomePageData(){
-    //tournaments filtered and sorted by startat and get their signup count
-    //webpages sorted by updatedate
-    //sorted and top 15 users by their match wins
 
+  async getHomePageData(ctx){
+    var tournaments = await strapi.entityService.findMany(tournamentapi,{
+      sort:{startsat:'asc'},
+      filters:{
+        startsat:{
+          $gt:Date.now() - (24 * 3600 * 1000),
+        }
+      },
+      populate:['image','tournament_signups']
+    })
+    for(var t of tournaments){
+      t.signupcount = t.tournament_signups.length
+      delete t.tournament_signups
+    }
+
+    var webpages = await strapi.entityService.findMany(wpapi,{
+      populate:'*',
+      sort:{updatedAt:'desc'},
+      start:0,
+      limit:10,
+    })
+
+    var users = await strapi.entityService.findMany(usersapi,{
+    })
+    var matches = await strapi.entityService.findMany(matchapi,{
+      populate:[
+        'player1','player2'
+      ],
+      filters:{
+        scoreReported:true,
+      }
+    })
+    orderUsers(users,matches)
+    users = users.slice(0,15)
+
+    //tournaments filtered and sorted by startat and get their signup count
+    //webpages top 10 sorted by updatedate
+    //sorted and top 15 users by their match wins
+    ctx.response.body = {
+      webpages:webpages,
+      tournaments:tournaments,
+      users:users,
+      // matches:matches,
+    }
+    return
   },
 
   async test(ctx) {
@@ -242,3 +283,32 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
 }));
 
 
+function orderUsers(users,matches){
+  var userdict = {}
+  for(var user of users){
+      user.wins = 0
+      user.tournywins = 0
+      user.losses = 0
+      user.draws = 0
+      userdict[user.id] = user
+  }
+
+  for(var match of matches){
+      var istournywin = match.depth == 0 ? 1 : 0
+      if(match.score1 > match.score2){
+          userdict[match.player1.id].wins++
+          userdict[match.player1.id].tournywins += istournywin
+          userdict[match.player2.id].losses++
+      }else if(match.score2 > match.score1){
+          userdict[match.player2.id].wins++
+          userdict[match.player2.id].tournywins += istournywin
+          userdict[match.player1.id].losses++
+      }else{
+          userdict[match.player1.id].draws++
+          userdict[match.player2.id].draws++
+      }
+  }
+
+  users.sort((a,b) => b.tournywins - a.tournywins)
+  return users
+}

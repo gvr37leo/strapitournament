@@ -45,7 +45,7 @@ export function orderUsers(users,matches){
         userdict[user.id] = user
     }
 
-    for(var match of matches.filter(m => m.scoreReported == true)){
+    for(var match of matches.filter(m => m.attributes.scoreReported == true)){
         var istournywin = match.attributes.depth == 0 ? 1 : 0
         if(match.attributes.score1 > match.attributes.score2){
             userdict[match.attributes.player1.data.id].wins++

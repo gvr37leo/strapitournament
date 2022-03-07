@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import {get,getHost} from './utils'
+import {get,getCustom,getHost} from './utils'
 
 export default function Profile(){
     var [state,setState] = useState({loaded:false})
@@ -9,16 +9,7 @@ export default function Profile(){
 
     useEffect(() => {
 
-
-        fetch(`${getHost()}/api/getUserWithMatches`,{
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify({
-                userid:params.id,
-            })
-        }).then(res => res.json())
+        getCustom(`getUserWithMatches`,{userid:params.id})
         .then((data) => {
             setState({
                 loaded:true,
