@@ -14,17 +14,17 @@ module.exports = {
       //   DATABASE_PASSWORD: 'password', // your password for psql
       // },
     },
-    // {
-    //   name: 'frontend',
-    //   cwd: '/strapitournament/frontend',
-    //   script: 'npm',
-    //   args: 'run start',
-    // },
-    // {
-    //   name: 'webhook',
-    //   cwd: '/strapitournament',
-    //   script: 'webhook.js'
-    // },
+    {
+      name: 'frontend',
+      cwd: '/strapitournament/frontend',
+      script: 'npm',
+      args: 'run start',
+    },
+    {
+      name: 'webhook',
+      cwd: '/strapitournament',
+      script: 'webhook.js'
+    },
   ],
 };
  
