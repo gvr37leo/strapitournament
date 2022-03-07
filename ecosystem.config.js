@@ -20,11 +20,11 @@ module.exports = {
       script: './frontend/npm',
       args: 'run start',
     },
-    {
-      name: 'webhook',
-      cwd: '/strapitournament',
-      script: 'webhook.js'
-    }
+    // {
+    //   name: 'webhook',
+    //   cwd: '/strapitournament',
+    //   script: 'webhook.js'
+    // },
   ],
 };
  
