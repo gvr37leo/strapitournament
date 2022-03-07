@@ -99,7 +99,7 @@ export default function Homepage(){
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
-                            <th scope="col">tourny wins abcd</th>
+                            <th scope="col">tourny wins</th>
                             <th scope="col">wins</th>
                             <th scope="col">losses</th>
                             <th scope="col">country</th>
