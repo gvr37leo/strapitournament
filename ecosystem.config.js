@@ -17,7 +17,7 @@ module.exports = {
     {
       name: 'frontend',
       cwd: '/strapitournament/frontend',
-      script: './frontend/npm',
+      script: 'npm',
       args: 'run start',
     },
     // {
