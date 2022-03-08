@@ -5,20 +5,19 @@ module.exports = {
       cwd: '/strapitournament/my-project',
       script: 'npm',
       args: 'run develop',
-      // env: {
-      //   NODE_ENV: 'production',
-      //   DATABASE_HOST: 'localhost', // database endpoint
-      //   DATABASE_PORT: '5432',
-      //   DATABASE_NAME: 'strapi', // DB name
-      //   DATABASE_USERNAME: 'your-name', // your username for psql
-      //   DATABASE_PASSWORD: 'password', // your password for psql
-      // },
+      env:{
+        NODE_ENV: 'production',
+        PUBLIC_URL: 'http://64.225.54.10:1337',
+      }
     },
     {
       name: 'frontend',
       cwd: '/strapitournament/frontend',
       script: 'npm',
       args: 'run start',
+      env:{
+        REACT_APP_ENVIRONMENT: 'production'
+      }
     },
     {
       name: 'webhook',

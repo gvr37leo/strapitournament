@@ -1,5 +1,3 @@
-/* global $ */
-import {host} from '../env'
 
 export async function get(type,parameters){
     var querystring = $.param(parameters)
@@ -32,7 +30,11 @@ export function getLoggedInUser(){
     return JSON.parse(localStorage.getItem('logindata'))
 }
 export function getHost(){
-    return host
+    if(process.env.REACT_APP_ENVIRONMENT == 'production'){
+        return 'http://64.225.54.10:1337'
+    }else{
+        return 'http://localhost:1337'
+    }
 }
 
 export function orderUsers(users,matches){

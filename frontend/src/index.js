@@ -12,10 +12,6 @@ import Homepage from './pages/homepage';
 import {get, getHost} from './pages/utils'
 import Discord from './components/discord';
 
-function updateHTML(){
-  ReactDOM.render()
-}
-
 get('homepage',{populate:['pagebackground','banner','logo','navigationbar','leaderboardbackground','background','socialmedia.image']}).then((data => {
   window.homepagedata = data
   document.body.style = `background-attachment : fixed; background-position:center; background-size:cover; background-image:url('${getHost()+homepagedata.data.attributes.background.data.attributes.url}')`
@@ -24,7 +20,7 @@ get('homepage',{populate:['pagebackground','banner','logo','navigationbar','lead
       <Router>
         <div style={{"display":"flex","flexDirection":"column","minHeight":"calc(100vh - 18px)"}}>
           <div><Header></Header></div>
-          <div  className="container-fluid">
+          <div className="container-fluid">
             <Routes>
               <Route exact path="/" element={<Homepage></Homepage>}>
               </Route>
