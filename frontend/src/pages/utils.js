@@ -31,7 +31,7 @@ export function getLoggedInUser(){
 }
 export function getHost(){
     if(process.env.REACT_APP_ENVIRONMENT == 'production'){
-        return 'http://64.225.54.10:1337'
+        return 'http://157.245.119.170:1337'
     }else{
         return 'http://localhost:1337'
     }
