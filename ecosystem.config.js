@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'strapi',
-      cwd: '/strapitournament/my-project',
+      cwd: '~/strapitournament/my-project',
       script: 'npm',
       args: 'run develop',
       env:{
@@ -15,7 +15,7 @@ module.exports = {
     },
     {
       name: 'frontend',
-      cwd: '/strapitournament/frontend',
+      cwd: '~/strapitournament/frontend',
       script: 'npm',
       args: 'run start',
       env:{
@@ -24,7 +24,7 @@ module.exports = {
     },
     {
       name: 'webhook',
-      cwd: '/strapitournament',
+      cwd: '~/strapitournament',
       script: 'webhook.js'
     },
   ],
