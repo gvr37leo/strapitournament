@@ -9,7 +9,7 @@ module.exports = {
         NODE_ENV: 'development',
         // NODE_ENV: 'production',
         // PUBLIC_URL: 'http://64.225.54.10:1337',
-        PUBLIC_URL: 'http://157.245.119.170:1337',
+        PUBLIC_URL: 'https://157.245.119.170:1337',
         
       }
     },
