@@ -31,7 +31,7 @@ export function getLoggedInUser(){
 }
 export function getHost(){
     if(process.env.REACT_APP_ENVIRONMENT == 'production'){
-        return 'https://totaltavern.com:1337'
+        return 'https://api.totaltavern.com'
     }else{
         return 'http://localhost:1337'
     }
