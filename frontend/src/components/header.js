@@ -58,13 +58,12 @@ export default class Header extends React.Component{
                                     </li>
                                 }else{
                                     return <li key={webpage.id} className="nav-item dropdown">
-                                        <Link style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" to={`/webpage/${webpage.id}`}>{webpage.attributes.title}</Link>
+                                        <Link style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link dropdown-toggle"  id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false" to={`/webpage/${webpage.id}`}>{webpage.attributes.title}</Link>
                                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                             {webpage.attributes.children.data.map(child => {
                                                 return <li key={child.id}><Link className="dropdown-item" to={`/webpage/${child.id}`}>{child.attributes.title}</Link></li>
                                             })}
                                         </ul>
-                                        
                                     </li>
                                 }
                             })

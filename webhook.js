@@ -25,10 +25,13 @@ http.createServer(function(req, res) {
         }
         console.log(`stdout: ${stdout}`);
         console.log(`stderr: ${stderr}`);
+        require('child_process').exec('git rev-parse HEAD', function(err, stdout) {
+          console.log('Last commit hash on this branch is:', stdout);
+        });
       });
     }
   });
-
+  
   res.end();
 })
 .listen(8080);

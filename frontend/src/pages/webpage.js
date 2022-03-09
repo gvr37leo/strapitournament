@@ -15,7 +15,8 @@ export default function Webpage(){
                 homepage:homepagedata.data,
             })
         })
-    },[])
+    },[params])
+
 
     if(state.loaded == false)return <div>loading</div>
 
