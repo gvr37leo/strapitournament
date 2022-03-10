@@ -129,65 +129,6 @@ export default function Homepage(){
     </div>
 }
 
-export class asd extends React.Component{
-    //get leaderboard
-    //get guides/blogs
-    //get tournaments with their signups count
-    //login functionality
-
-    constructor(){
-        super();
-        this.state = {
-            loaded:false,
-            matches:[],
-            webpages:[],
-            tournaments:[],
-            homepage:{},
-        }
-
-    }
-
-
-    componentDidMount(){
-        // https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/rest-api.html#api-parameters
-        // sort:['startat:asc']
-        // filters:{name:{'$eq':'john'}}
-
-        // homepage for image links
-        // webpages for slider
-        // tournaments for cards
-        // matches for leaderboard ?populate players
-        // {
-        //     pagination:{
-        //         start:0,
-        //         limit:1,
-        //         withCount:true,
-        //     }
-        Promise.all([get('matches',{populate:'*'}),get('webpages',{populate:'*'}),get('tournaments',{populate:'*'}),get('users')]).then((res) => {
-            var [matches,webpages,tournaments,users] = res
-            this.setState({
-                loaded:true,
-                matches:matches.data,
-                webpages:webpages.data,
-                tournaments:tournaments.data,
-                homepage:homepagedata.data,
-                users:users
-            })
-        })
-    }
-
-    render(){
-        if(this.state.loaded == false){
-            return null
-        }
-
-        
-    }
-    
-}
-
-
-
 
 
 
