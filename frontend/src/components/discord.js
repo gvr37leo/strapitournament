@@ -24,7 +24,7 @@ export default class Discord extends React.Component{
         .then(res => res.json())
         .then(data => {
             localStorage.setItem('logindata',JSON.stringify(data))
-            // location.href = '/'
+            location.href = '/'
         })
 
         this.setState({
