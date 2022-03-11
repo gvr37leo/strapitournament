@@ -43,7 +43,7 @@ export default function Homepage(){
                                     state.webpages.map((webpage,i) => {
                                         return <div key={i} style={{"maxHeight":"300px"}} className={`carousel-item  ${i == 0 ? 'active' : ''}`}>
                                             <Link to={`/webpage/${webpage.id}`}>
-                                                <img style={{"maxHeight":"300px","objectFit":"cover","borderRadius":"3px"}} src={getHost() + (webpage?.banner?.url ?? '/Warhammer.jpg')} className="d-block w-100" alt="..."/>
+                                                <img style={{"maxHeight":"300px","objectFit":"cover","borderRadius":"3px"}} src={webpage?.banner?.url == null ? '/Warhammer.jpg' : getHost() + webpage?.banner?.url } className="d-block w-100" alt="..."/>
                                                 <div className="carousel-caption d-none d-md-block">
                                                     <h5 style={{"textShadow":"0px 0px 6px #000000"}}>{webpage.title}</h5>
                                                 </div>
