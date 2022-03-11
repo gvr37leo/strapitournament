@@ -249,6 +249,13 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
     var webpages = await strapi.entityService.findMany(wpapi,{
       populate:'*',
       sort:{updatedAt:'desc'},
+      filters:{
+        parent:{
+          id:{
+            $notNull:true
+          }
+        }
+      },
       // start:0,
       // limit:10,
       publicationState:'live',
