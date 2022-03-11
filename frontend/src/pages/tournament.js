@@ -180,7 +180,7 @@ function renderCard(match,state) {
 			if (isLoggedIn() && Date.now() > new Date(state.tournament.attributes.startsat)) {
 				var user = getLoggedInUser().user
 				if(
-					(match.attributes.player1 != null && match.attributes.player2 != null)
+					(match.attributes.player1?.data != null && match.attributes.player2?.data != null)
 					&& (match.attributes.scoreReported == false)
 					&& (match.attributes.player1.data.id == user.id || match.attributes.player2.data.id == user.id)
 				) {
