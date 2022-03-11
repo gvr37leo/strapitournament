@@ -81,7 +81,7 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
   },
 
 
-  async generateTree(parent,depth,playercount,players,playercounter,matchcounter,allmatches,tournamentid){
+  async generateTree(parent,depth,playercount,players,matchcounter,allmatches,tournamentid){
     //create match
 
     var self = await strapi.entityService.create('api::match.match',{
@@ -98,18 +98,18 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
     if(playercount == 0){
 
     }else if(playercount == 1){
-      self.player1 = players[playercounter.index++].id
+      self.player1 = players.splice(0,1)[0].id
     }else if(playercount == 2){
-      self.player1 = players[playercounter.index++].id
-      self.player2 = players[playercounter.index++].id
+      self.player1 = players.splice(0,1)[0].id
+      self.player2 = players.splice(0,1)[0].id
     }else if(playercount == 3){
-      self.player1 = players[playercounter.index++].id
-      this.generateTree(self,depth + 1,2,players,playercounter,matchcounter,allmatches)
+      self.player1 = players.splice(0,1)[0].id
+      await this.generateTree(self,depth + 1,2,players,matchcounter,allmatches,tournamentid)
     }else{
       var leftsize = Math.ceil(playercount / 2)
       var rightsize = Math.floor(playercount / 2)
-      this.generateTree(self,depth + 1,leftsize,players,playercounter,matchcounter,allmatches,tournamentid)
-      this.generateTree(self,depth + 1,rightsize,players,playercounter,matchcounter,allmatches,tournamentid)
+      await this.generateTree(self,depth + 1,leftsize,players,matchcounter,allmatches,tournamentid)
+      await this.generateTree(self,depth + 1,rightsize,players,matchcounter,allmatches,tournamentid)
     }
     // self.name = `${matchcounter.index++}`
     var res = await strapi.entityService.update('api::match.match',self.id,{
@@ -134,10 +134,11 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
       return strapi.entityService.delete('api::match.match',m.id)
     }))
 
-    var signups = tournament.tournament_signups.filter(s => s.checkedin)
+    var signups = tournament.tournament_signups.filter(s => s.checkedin || ctx.request.body.includeAll)
+
     var players = signups.map(s => s.users_permissions_user)
     var resmatches = []
-    var res = await this.generateTree(null,0,signups.length,players,{index:0},{index:0},resmatches,tournamentid)
+    var res = await this.generateTree(null,0,signups.length,players,{index:0},resmatches,tournamentid)
     ctx.body = resmatches
     return
   },
@@ -248,8 +249,9 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
     var webpages = await strapi.entityService.findMany(wpapi,{
       populate:'*',
       sort:{updatedAt:'desc'},
-      start:0,
-      limit:10,
+      // start:0,
+      // limit:10,
+      publicationState:'live',
     })
 
     var users = await strapi.entityService.findMany(usersapi,{

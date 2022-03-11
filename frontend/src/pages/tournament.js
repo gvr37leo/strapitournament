@@ -61,16 +61,30 @@ export default function Tournament(){
 
 					{(() => {
 						if(state.isAdmin){
-							return <button type="button" onClick={(e) => {
-								e.target.disabled = true
-								//tournamentid loggedinmemberid
-								getCustom('generatebracket',{
-									tournamentid:state.tournament.id,
-								}).finally(() => {
-									e.target.disabled = false
-									location.reload()
-								})
-							}} className="btn btn-primary">generate bracket</button>
+							return <div>
+								<button type="button" onClick={(e) => {
+									e.target.disabled = true
+									getCustom('generatebracket',{
+										tournamentid:state.tournament.id,
+										includeAll:false,
+									}).finally(() => {
+										e.target.disabled = false
+										location.reload()
+									})
+								}} className="btn btn-primary">generate bracket</button>
+
+								<button style={{marginLeft:'20px'}} type="button" onClick={(e) => {
+									e.target.disabled = true
+									getCustom('generatebracket',{
+										tournamentid:state.tournament.id,
+										includeAll:true,
+									}).finally(() => {
+										e.target.disabled = false
+										location.reload()
+									})
+								}} className="btn btn-primary">generate bracket all</button>
+							
+							</div>
 						}
 					})()}
 					
@@ -152,7 +166,7 @@ function renderTree(match,state) {
 	} else {
 		return <div key={match.id} style={{"display":"inline-flex","alignItems":"center","justifyContent":"start", 'magin':match.attributes.depth == maxdepth - 2 ? '10px':''}} >
 			<div style={{"display":"flex","flexDirection":"column","alignItems":"flex-end"}}>
-				{children.map(child => renderTree(child))}
+				{children.map(child => renderTree(child,state))}
 			</div>
 			{renderCard(match,state)}
 		</div>
@@ -189,10 +203,10 @@ function renderCard(match,state) {
 			}
 		})()}
 		<div>
-			<div>{match.attributes.player1 != null ? `${match.attributes.player1.data.attributes.username}:${match.attributes.score1}` : 'TBD'}</div>
+			<div>{match.attributes.player1?.data != null ? `${match.attributes.player1.data.attributes.username}:${match.attributes.score1}` : 'TBD'}</div>
 		</div>
 		<div>
-			<div>{match.attributes.player2 != null ? `${match.attributes.player2.data.attributes.username}:${match.attributes.score2}` : 'TBD'}</div>
+			<div>{match.attributes.player2?.data != null ? `${match.attributes.player2.data.attributes.username}:${match.attributes.score2}` : 'TBD'}</div>
 		</div>
 	</div>
 }
