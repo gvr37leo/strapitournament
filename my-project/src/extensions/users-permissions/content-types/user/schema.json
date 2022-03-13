@@ -86,6 +86,38 @@
     },
     "country": {
       "type": "string"
+    },
+    "landWins": {
+      "type": "integer",
+      "default": 0
+    },
+    "landLosses": {
+      "type": "integer",
+      "default": 0
+    },
+    "landTournamentWins": {
+      "type": "integer",
+      "default": 0
+    },
+    "landDraws": {
+      "type": "integer",
+      "default": 0
+    },
+    "dominationWins": {
+      "type": "integer",
+      "default": 0
+    },
+    "dominationLosses": {
+      "type": "integer",
+      "default": 0
+    },
+    "dominationTournamentWins": {
+      "type": "integer",
+      "default": 0
+    },
+    "dominationDraws": {
+      "type": "integer",
+      "default": 0
     }
   }
 }

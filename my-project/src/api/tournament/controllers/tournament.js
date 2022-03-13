@@ -159,6 +159,7 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
         'parentMatch',
         'parentMatch.player1',
         'parentMatch.player2',
+        'tournament',
       ],
     })
 
@@ -176,9 +177,33 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
       })
 
       var winner = match.player1
-      if(match.score2 > match.score1){
+      var loser = match.player2
+      if(score2 > score1){
         winner = match.player2
+        loser = match.player1
       }
+
+
+      var prefix = match.tournament.tournamentType == 'domination' ? 'domination' : 'land'
+      if(score1 == score2){
+        winner[prefix + 'Draws']++
+        loser[prefix + 'Draws']++
+      }else{
+        winner[prefix + 'Wins']++
+        loser[prefix + 'Losses']++
+        if(match.depth == 0){
+          winner[prefix + 'TournamentWins']++
+        }
+      }
+      var x = await strapi.entityService.update(usersapi,match.player1.id,{
+        data:match.player1,
+      }).catch(err => {
+        console.log(err)
+      })
+      var y = await strapi.entityService.update(usersapi,match.player2.id,{
+        data:match.player2,
+      })
+
 
       if(match.parentMatch != null){
         var parentMatchdata = {}
@@ -284,6 +309,12 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
       // matches:matches,
     }
     return
+  },
+
+  async recountWinsAndLosses(){
+    //get all matches
+    //get all users
+    //do a recount and update all the users
   },
 
   async test(ctx) {
