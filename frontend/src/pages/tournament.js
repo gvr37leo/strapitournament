@@ -208,6 +208,11 @@ function renderCard(match,state) {
 		<div>
 			<div>{match.attributes.player2?.data != null ? `${match.attributes.player2.data.attributes.username}:${match.attributes.score2}` : 'TBD'}</div>
 		</div>
+		{(() => {
+			if(state.isAdmin){
+				return <a target={'_blank'} href={`${getHost()}/admin/content-manager/collectionType/api::match.match/${match.id}`}>{match.id}</a>
+			}
+		})()}
 	</div>
 }
 
