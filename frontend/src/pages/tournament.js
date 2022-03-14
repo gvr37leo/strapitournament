@@ -174,7 +174,7 @@ function renderTree(match,state) {
 }
 
 function renderCard(match,state) {
-	return <div key={match.id} className="matchcard" id="match-@match.Id">
+	return <div key={match.id} className="matchcard" >
 		{(() => {
 			
 			if (isLoggedIn() && Date.now() > new Date(state.tournament.attributes.startsat)) {
@@ -203,10 +203,10 @@ function renderCard(match,state) {
 			}
 		})()}
 		<div>
-			<div>{match.attributes.player1?.data != null ? `${match.attributes.player1.data.attributes.username}:${match.attributes.score1}` : 'TBD'}</div>
+			<div>{match.attributes.player1?.data != null ? <span>{match.attributes.player1.data.attributes.username}:<b>{match.attributes.score1}</b></span> : 'TBD'}</div>
 		</div>
 		<div>
-			<div>{match.attributes.player2?.data != null ? `${match.attributes.player2.data.attributes.username}:${match.attributes.score2}` : 'TBD'}</div>
+			<div>{match.attributes.player2?.data != null ? <span>{match.attributes.player2.data.attributes.username}:<b>{match.attributes.score2}</b></span> : 'TBD'}</div>
 		</div>
 		{(() => {
 			if(state.isAdmin){
