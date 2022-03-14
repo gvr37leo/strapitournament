@@ -109,6 +109,7 @@ export default function Tournament(){
 						width: 160px;
 						background: white;
 						box-shadow: black 0px 5px 9px 2px;
+						overflow:auto;
 					}`}
 				</style>
 				{/* @*brackets*@ */}
