@@ -185,8 +185,8 @@ function renderCard(match,state) {
 					&& (match.attributes.player1.data.id == user.id || match.attributes.player2.data.id == user.id)
 				) {
 					return <div style={{"display":"flex","flexDirection":"column"}}>
-						<input id="inputscore1" placeholder={match.attributes.player1.data.attributes.username} type="number" name="score1"/>
-						<input id="inputscore2"placeholder={match.attributes.player2.data.attributes.username} type="number" name="score2"/>
+						<input id="inputscore1" placeholder={match.attributes.player1.data.attributes.username} type="number" value={0} name="score1"/>
+						<input id="inputscore2"placeholder={match.attributes.player2.data.attributes.username} type="number" value={0} name="score2"/>
 						<button onClick={(e) => {
 							e.target.disabled = true
 							getCustom('reportscore',{

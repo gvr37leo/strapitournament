@@ -29,6 +29,7 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
     var tournament = await strapi.entityService.findOne(tournamentapi,tournamentid,{})
 
 
+    //this can null pointer issues
     if(user.tournament_signups.find(s => s.tournament.id == tournamentid)){
       ctx.response.status = 400
       ctx.response.body = 'already signed up'
@@ -176,7 +177,7 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
       })
 
       var winner = match.player1
-      if(match.score2 > match.score1){
+      if(score2 > score1){
         winner = match.player2
       }
 
