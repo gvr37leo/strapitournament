@@ -23,8 +23,13 @@ export default class Discord extends React.Component{
         fetch(`${getHost()}/api/auth/discord/callback?access_token=${res.raw.access_token}`)
         .then(res => res.json())
         .then(data => {
-            localStorage.setItem('logindata',JSON.stringify(data))
-            location.href = '/'
+            var jsondata = JSON.stringify(data)
+            if(data?.status >= 300){
+                alert(`something went wrong, please leave a message at the turin multiplayer discord. Errormessage ${data}`)
+            }else{
+                localStorage.setItem('logindata',jsondata)
+                location.href = '/'
+            }
         })
 
         this.setState({
