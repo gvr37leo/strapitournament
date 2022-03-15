@@ -26,6 +26,7 @@ export default function Tournament(){
 			'tournament_signups.users_permissions_user',
 			'rounddescription',
 			'image',
+			'ExternaltournamentLink'
 			]}),
 			isLoggedIn() ? getCustom('getUserWithRole',{userid:getLoggedInUser().user.id}) : null
 		]).then(([data1,data2]) => {
@@ -218,7 +219,7 @@ function renderCard(match,state) {
 }
 
 function signupcheckinbutton(state){
-	if (state.tournament.attributes.ExternalTournamentLink != null) {
+	if (state.tournament.attributes.ExternaltournamentLink != null) {
 		return
 	}
 	if(isLoggedIn() == false){
