@@ -17,7 +17,7 @@ export default function Profile(){
                 matches:data.matches1.concat(data.matches2)
             })
         })
-    },[])
+    },[params])
 
     if(state.loaded == false)return <div>loading</div>
 
