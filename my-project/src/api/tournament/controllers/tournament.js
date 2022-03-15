@@ -246,7 +246,7 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
           $gt:Date.now() - (24 * 3600 * 1000),
         }
       },
-      populate:['image','tournament_signups']
+      populate:['image','tournament_signups','ExternaltournamentLink']
     })
     for(var t of tournaments){
       t.signupcount = t.tournament_signups.length

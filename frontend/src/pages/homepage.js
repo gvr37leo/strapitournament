@@ -81,6 +81,8 @@ export default function Homepage(){
                                                 {(() => {
                                                     if (tournament.ExternaltournamentLink == null) {
                                                         return <div>{tournament.signupcount} people signed up</div>	
+                                                    }else{
+                                                        return <a href={tournament.ExternaltournamentLink.url}>{tournament.ExternaltournamentLink.title}</a>
                                                     }
                                                 })()}
                                         </div>
