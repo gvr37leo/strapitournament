@@ -325,6 +325,12 @@ function orderUsers(users,matches){
       }
   }
 
-  users.sort((a,b) => b.tournywins - a.tournywins)
+  users.sort((a,b) => {
+    if(b.tournywins == a.tournywins){
+      return b.wins - a.wins
+    }else{
+      return b.tournywins - a.tournywins
+    }
+  })
   return users
 }
