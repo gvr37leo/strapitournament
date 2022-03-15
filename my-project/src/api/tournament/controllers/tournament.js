@@ -30,7 +30,7 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
 
 
     //this can null pointer issues
-    if(user.tournament_signups.find(s => s.tournament.id == tournamentid)){
+    if(user.tournament_signups.find(s => s.tournament?.id == tournamentid)){
       ctx.response.status = 400
       ctx.response.body = 'already signed up'
       return
@@ -160,6 +160,7 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
         'parentMatch',
         'parentMatch.player1',
         'parentMatch.player2',
+        'parentMatch.childMatches'
       ],
     })
 
@@ -182,12 +183,17 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
       }
 
       if(match.parentMatch != null){
+
+        var sibling = match.parentMatch.childMatches.find(m => m.id != match.id)
         var parentMatchdata = {}
-        if(match.parentMatch.player1 == null){
+        if(sibling?.id > match.id && match.parentMatch.player1 == null){
           parentMatchdata.player1 = winner.id
         }else if(match.parentMatch.player2 == null){
           parentMatchdata.player2 = winner.id
+        }else if(match.parentMatch.player1 == null){
+          parentMatchdata.player1 = winner.id
         }
+
 
         await strapi.entityService.update('api::match.match',match.parentMatch.id,{
           data:parentMatchdata,
