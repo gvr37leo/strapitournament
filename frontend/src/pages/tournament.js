@@ -59,6 +59,11 @@ export default function Tournament(){
 					<div>current time {new Date().toLocaleString()}</div>
 					<div>tournament starts at {new Date(state.tournament.attributes.startsat).toLocaleString()}</div>
 					<div>checkins begin at {new Date(new Date(state.tournament.attributes.startsat) - 3600 * 1000).toLocaleString()}</div>
+					{(() => {
+						if(state.tournament.attributes.ExternaltournamentLink != null){
+							return <a href={state.tournament.attributes.ExternaltournamentLink.url}>{state.tournament.attributes.ExternaltournamentLink.title}</a>
+						}
+					})()}
 
 					{(() => {
 						if(state.isAdmin){
@@ -91,11 +96,6 @@ export default function Tournament(){
 					
 
 					{signupcheckinbutton(state)}
-					{(() => {
-						if(state.tournament.attributes.ExternalTournamentLink != null){
-							<a href={state.tournament.attributes.ExternalTournamentLink}><h1>{state.tournament.attributes.ExternalTournamentLink}</h1></a>
-						}
-					})()}
 					<div className='ck-content' style={{"margin":"10px","padding":"10px","border":"1px solid black","borderRadius":"3px"}} dangerouslySetInnerHTML={{__html:state.tournament.attributes.description}}></div>
 				</div>
 		

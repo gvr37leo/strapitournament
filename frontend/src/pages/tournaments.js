@@ -32,7 +32,7 @@ export default class Tournaments extends React.Component{
 						<div style={{"background":"white","color":"black","padding":"10px","margin":"10px","borderRadius":"3px","border":"1px solid black"}}>
 							<div>{tournament.Name}</div>
 							<img style={{"maxWidth":"300px"}} src={getHost() + tournament?.attributes?.image?.data?.attributes?.url}></img>
-							<p>{tournament.attributes.startsat}</p>
+							<p>{new Date(tournament.attributes.startsat).toLocaleString()}</p>
 						</div>
 					</Link>
 				)}
