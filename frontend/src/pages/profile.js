@@ -14,7 +14,7 @@ export default function Profile(){
             setState({
                 loaded:true,
                 user:data,
-                matches:data.matches1.concat(data.matches2)
+                matches:data.matches1.concat(data.matches2).sort((a,b) => b.createdAt - a.createdAt)
             })
         })
     },[params])
