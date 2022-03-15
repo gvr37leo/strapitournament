@@ -14,7 +14,7 @@ export default function Profile(){
             setState({
                 loaded:true,
                 user:data,
-                matches:data.matches1.concat(data.matches2).map(m => {m.createdAt = new Date(m.createdAt); return m;}).sort((a,b) => b.createdAt - a.createdAt)
+                matches:data.matches1.concat(data.matches2).map(m => {m.updatedAt = new Date(m.updatedAt); return m;}).sort((a,b) => b.updatedAt - a.updatedAt)
             })
         })
     },[params])
@@ -75,7 +75,7 @@ export default function Profile(){
                         <td><Link to={`/profile/${match.player2?.id}`}>{match.player2?.username}</Link></td>
                         
                         <td>{match.score2}</td>
-                        <td>{new Date(match.createdAt).toLocaleString()}</td>
+                        <td>{new Date(match.updatedAt).toLocaleString()}</td>
                     </tr>
                 })}
             </tbody>
