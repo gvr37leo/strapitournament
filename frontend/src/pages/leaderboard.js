@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {get,orderUsers} from './utils'
 
 export default class Leaderboard extends React.Component{
@@ -70,7 +71,7 @@ export default class Leaderboard extends React.Component{
                     {this.state.users.map((user,i) => {
                         return <tr key={i}>
                             <td scope="row"><b>{i + 1}</b></td>
-                            <td><a href={`/profile/${user.id}`}>{user.username}</a></td>
+                            <td><Link to={`/profile/${user.id}`}>{user.username}</Link></td>
                             <td>{user.tournywins}</td>
                             <td>{user.wins}</td>
                             <td>{user.losses}</td>
@@ -78,20 +79,6 @@ export default class Leaderboard extends React.Component{
                             <td>{user.clan}</td>
                         </tr>
                     })}
-                    {/* @for (int i = 0; i < orderedplayers.Count(); i++){
-                        
-                        var stats = orderedplayers[i];
-                        var player = stats.player;
-                        <tr>
-                            <td scope="row"><b>@(stats.placement + 1)</b></td>
-                            <td><a href="/player-profile?playerid=@player.Id">@player.Name</a></td>
-                            <td>@stats.tournamentwins</td>
-                            <td>@stats.wins</td>
-                            <td>@stats.losses</td>
-                            <td>@(player.GetValue<string>("country"))</td>
-                            <td>@player.GetValue("clan")</td>
-                        </tr>
-                    } */}
                 </tbody>
             </table>
         </div>
