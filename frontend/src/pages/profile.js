@@ -70,9 +70,9 @@ export default function Profile(){
                         winner = match.player1;
                     }
                     return <tr key={match.id} className={winner?.id == params.id ? "table-success" : "table-danger"}>
-                        <td><Link to={`/profile/${match.player1.id}`}>{match.player1.username}</Link></td>
+                        <td><Link to={`/profile/${match.player1?.id}`}>{match.player1?.username}</Link></td>
                         <td>{match.score1}</td>
-                        <td><Link to={`/profile/${match.player2.id}`}>{match.player2.username}</Link></td>
+                        <td><Link to={`/profile/${match.player2?.id}`}>{match.player2?.username}</Link></td>
                         
                         <td>{match.score2}</td>
                         <td>{new Date(match.createdAt).toLocaleString()}</td>
