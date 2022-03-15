@@ -135,7 +135,7 @@ export default function Tournament(){
 				{signupcheckinbutton(state)}
 		
 				{/* @*signedup players*@ */}
-				{(state.tournament.ExternalTournamentLink == null) ? 
+				{(state.tournament.attributes.ExternaltournamentLink == null) ? 
 					<div>
 						<table className="table table-dark table-bordered w-auto">
 							<thead>
