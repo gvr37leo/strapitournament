@@ -210,10 +210,10 @@ function renderCard(match,state) {
 			}
 		})()}
 		<div style={{background:calcColor(match.attributes.score1,match.attributes.score2)}}>
-			{match.attributes.player1?.data != null ? <span>{match.attributes.player1.data.attributes.username}:<b>{match.attributes.score1}</b></span> : 'TBD'}
+			{match.attributes.player1?.data != null ? <span><b>{match.attributes.score1}</b>:{match.attributes.player1.data.attributes.username}</span> : 'TBD'}
 		</div>
 		<div style={{background:calcColor(match.attributes.score2,match.attributes.score1)}}>
-			{match.attributes.player2?.data != null ? <span>{match.attributes.player2.data.attributes.username}:<b>{match.attributes.score2}</b></span> : 'TBD'}
+			{match.attributes.player2?.data != null ? <span><b>{match.attributes.score2}</b>:{match.attributes.player2.data.attributes.username}</span> : 'TBD'}
 		</div>
 		{(() => {
 			if(state.isAdmin){
