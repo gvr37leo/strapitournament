@@ -209,10 +209,10 @@ function renderCard(match,state) {
 				}
 			}
 		})()}
-		<div style={{background:calcColor(match.attributes.score1,match.attributes.score2)}}>
+		<div style={{background:calcColor(match.attributes.score1,match.attributes.score2),paddingLeft:'3px'}}>
 			{match.attributes.player1?.data != null ? <span><b>{match.attributes.score1}</b>:{match.attributes.player1.data.attributes.username}</span> : 'TBD'}
 		</div>
-		<div style={{background:calcColor(match.attributes.score2,match.attributes.score1)}}>
+		<div style={{background:calcColor(match.attributes.score2,match.attributes.score1),paddingLeft:'3px'}}>
 			{match.attributes.player2?.data != null ? <span><b>{match.attributes.score2}</b>:{match.attributes.player2.data.attributes.username}</span> : 'TBD'}
 		</div>
 		{(() => {
