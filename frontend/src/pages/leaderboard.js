@@ -53,14 +53,15 @@ export default function Leaderboard(props){
             </thead>
             <tbody>
                 {(() => {
-                    return state.users.filter(user => user.username.includes(searchdata)).map((user,i) => {
+                    var searchlower = searchdata.toLowerCase()
+                    return state.users.filter(user => user.username.toLowerCase().includes(searchlower)).map((user,i) => {
                         return <tr key={i}>
                             <td scope="row"><b>{user.rank + 1}</b></td>
                             <td><Link to={`/profile/${user.id}`}>{user.username}</Link></td>
                             <td>{user.tournywins}</td>
                             <td>{user.wins}</td>
                             <td>{user.losses}</td>
-                            <td>{(user.wins / Math.max(user.wins + user.losses,1)) * 100}%</td>
+                            <td>{((user.wins / Math.max(user.wins + user.losses,1)) * 100).toFixed(1) }%</td>
                             <td>{user.country}</td>
                             <td>{user.clan}</td>
                         </tr>
