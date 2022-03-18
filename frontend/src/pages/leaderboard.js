@@ -61,7 +61,7 @@ export default function Leaderboard(props){
                             <td>{user.tournywins}</td>
                             <td>{user.wins}</td>
                             <td>{user.losses}</td>
-                            <td>{+((user.wins / Math.max(user.wins + user.losses,1)) * 100).toFixed(1) }%</td>
+                            <td>{+((user.wins / Math.max(user.wins + user.losses,1)) * 100).toFixed(1) }%</td> 
                             <td>{user.country}</td>
                             <td>{user.clan}</td>
                         </tr>
