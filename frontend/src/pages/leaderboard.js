@@ -9,6 +9,7 @@ export default function Leaderboard(props){
     var [state,setState] = React.useState({loaded:false})
     var [searchdata,setSearchdata] = useState('')
     var input = React.createRef()
+    var colors = ['gold','silver','#CD7F32']
 
     useEffect(() => {
 
@@ -37,8 +38,12 @@ export default function Leaderboard(props){
                 </div>
             }
         })()}
-        
-        <table style={{"margin":"0px"}} className={"table table-light table-bordered"  + (props.enableSearch ? '' : 'w-auto')}>
+        <style>{
+            `td{
+                background-color:transparent !important;
+            }`    
+        }</style>
+        <table style={{"margin":"0px", background:'white'}} className={"table table-light table-bordered"  + (props.enableSearch ? '' : 'w-auto')}>
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -55,7 +60,7 @@ export default function Leaderboard(props){
                 {(() => {
                     var searchlower = searchdata.toLowerCase()
                     return state.users.filter(user => user.username.toLowerCase().includes(searchlower)).map((user,i) => {
-                        return <tr key={i}>
+                        return <tr style={{background:colors[user.rank]}} key={i}>
                             <td scope="row"><b>{user.rank + 1}</b></td>
                             <td><Link to={`/profile/${user.id}`}>{user.username}</Link></td>
                             <td>{user.tournywins}</td>
