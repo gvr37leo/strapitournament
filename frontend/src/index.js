@@ -4,13 +4,13 @@ import './index.css';
 import Header from './components/header'
 import Tournament from './pages/tournament'
 import Tournaments from './pages/tournaments'
-import Leaderboard from './pages/leaderboard'
 import Profile from './pages/profile'
 import Webpage from './pages/webpage'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Homepage from './pages/homepage';
 import {get, getHost} from './pages/utils'
 import Discord from './components/discord';
+import Leaderboard from './pages/leaderboard';
 
 get('homepage',{populate:['pagebackground','banner','logo','navigationbar','leaderboardbackground','background','socialmedia.image']}).then((data => {
   window.homepagedata = data
@@ -28,7 +28,7 @@ get('homepage',{populate:['pagebackground','banner','logo','navigationbar','lead
               </Route>
               <Route path="/tournament" element={<Tournaments></Tournaments>}>
               </Route>
-              <Route path="/leaderboard" element={<Leaderboard></Leaderboard>}>
+              <Route path="/leaderboard" element={<Leaderboard enableSearch limit={9999}></Leaderboard>}>
               </Route>
               <Route path="/profile/:id" element={<Profile></Profile>}>
               </Route>

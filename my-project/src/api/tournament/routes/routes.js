@@ -32,6 +32,10 @@ module.exports = {
       method: 'POST',
       path: '/getHomePageData',
       handler: 'tournament.getHomePageData',
+    },{
+      method: 'POST',
+      path: '/getLeaderbordData',
+      handler: 'tournament.getLeaderbordData',
     },
 
 

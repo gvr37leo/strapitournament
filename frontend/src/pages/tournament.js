@@ -176,7 +176,7 @@ function renderTree(match,state) {
 }
 
 function renderCard(match,state) {
-	return <div key={match.id} className="matchcard" >
+	return <div key={match.id} className="matchcard" style={{background:match.attributes.scoreReported ? '#4caf50' : ''}}>
 		{(() => {
 			
 			if (isLoggedIn() && Date.now() > new Date(state.tournament.attributes.startsat)) {
@@ -190,25 +190,30 @@ function renderCard(match,state) {
 						<input id="inputscore1" placeholder={match.attributes.player1.data.attributes.username} type="number"  name="score1"/>
 						<input id="inputscore2"placeholder={match.attributes.player2.data.attributes.username} type="number" name="score2"/>
 						<button onClick={(e) => {
-							e.target.disabled = true
-							getCustom('reportscore',{
-								matchid:match.id,
-								score1:inputscore1.valueAsNumber ? inputscore1.valueAsNumber : 0,
-								score2:inputscore2.valueAsNumber ? inputscore2.valueAsNumber : 0,
-							}).finally(() => {
-								e.target.disabled = false
-								location.reload()
-							})
+							
+							if(inputscore1.valueAsNumber > 0 || inputscore2.valueAsNumber > 0){
+								e.target.disabled = true
+								getCustom('reportscore',{
+									matchid:match.id,
+									score1:inputscore1.valueAsNumber ? inputscore1.valueAsNumber : 0,
+									score2:inputscore2.valueAsNumber ? inputscore2.valueAsNumber : 0,
+								}).finally(() => {
+									e.target.disabled = false
+									location.reload()
+								})
+							}else{
+								alert('atleast 1 score needs to be bigger than 0')
+							}
 						}} type="submit" className="btn btn-primary">report score</button>
 					</div>
 				}
 			}
 		})()}
-		<div>
-			<div>{match.attributes.player1?.data != null ? <span>{match.attributes.player1.data.attributes.username}:<b>{match.attributes.score1}</b></span> : 'TBD'}</div>
+		<div style={{background:calcColor(match.attributes.score1,match.attributes.score2)}}>
+			{match.attributes.player1?.data != null ? <span>{match.attributes.player1.data.attributes.username}:<b>{match.attributes.score1}</b></span> : 'TBD'}
 		</div>
-		<div>
-			<div>{match.attributes.player2?.data != null ? <span>{match.attributes.player2.data.attributes.username}:<b>{match.attributes.score2}</b></span> : 'TBD'}</div>
+		<div style={{background:calcColor(match.attributes.score2,match.attributes.score1)}}>
+			{match.attributes.player2?.data != null ? <span>{match.attributes.player2.data.attributes.username}:<b>{match.attributes.score2}</b></span> : 'TBD'}
 		</div>
 		{(() => {
 			if(state.isAdmin){
@@ -216,6 +221,16 @@ function renderCard(match,state) {
 			}
 		})()}
 	</div>
+}
+
+function calcColor(selfscore,otherscore){
+	if(selfscore > otherscore){
+		return '#5dfb5d'
+	}else if(selfscore < otherscore){
+		return '#ff7878'
+	}else{
+		return ''
+	}
 }
 
 function signupcheckinbutton(state){
@@ -231,15 +246,19 @@ function signupcheckinbutton(state){
 			var user = getLoggedInUser().user
 			var signup = state.tournament.attributes.tournament_signups.data.find(s => s.attributes.users_permissions_user.data.id == user.id);
 			if(signup == null) {
-				return <button type="submit" onClick={(e) => {
-					e.target.disabled = true
-					//tournamentid loggedinmemberid
-					getCustom('signup',{tournamentid:state.tournament.id})
-					.finally(() => {
-						e.target.disabled = false
-						location.reload()
-					})
-				}} className="btn btn-primary">Sign up for tournament</button>
+				if(Date.now() >= new Date(state.tournament.attributes.startsat)){
+					return <div>tournament has started</div>
+				}else{
+					return <button type="submit" onClick={(e) => {
+						e.target.disabled = true
+						//tournamentid loggedinmemberid
+						getCustom('signup',{tournamentid:state.tournament.id})
+						.finally(() => {
+							e.target.disabled = false
+							location.reload()
+						})
+					}} className="btn btn-primary">Sign up for tournament</button>
+				}
 			} else {
 				if (signup.attributes.checkedin) {
 					return <div>you're checked in</div>

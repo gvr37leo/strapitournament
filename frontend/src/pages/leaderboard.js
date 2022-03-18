@@ -1,90 +1,72 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {get,orderUsers} from './utils'
-
-export default class Leaderboard extends React.Component{
+import {get,getCustom,orderUsers} from './utils'
 
 
-    constructor(){
-        super();
-        this.state = {
-            loaded:false
-        }
-        this.input = React.createRef()
-        this.searchdata = ''
-	}
+export default function Leaderboard(props){
 
-	componentDidMount(){
-        this.refetch()
-	}
 
-    refetch(){
-        Promise.all([get('matches',{populate:'*'}),get('users',{
-            filters:{
-                username:{
-                    $containsi:this.searchdata
-                }
-            }
-        })]).then((res) => {
-            var [matches,users] = res
-            this.setState({
+    var [state,setState] = React.useState({loaded:false})
+    var [searchdata,setSearchdata] = useState('')
+    var input = React.createRef()
+
+    useEffect(() => {
+
+        getCustom('getLeaderbordData',{limit:props.limit ?? 15}).then(data => {
+            setState({
                 loaded:true,
-                matches:matches.data,
-                users:users,
+                users:data.users,
             })
-            console.log(res)
         })
-    }
+    },[])
+    
 
-    render(){
-        if(this.state.loaded == false)return <div>loading</div>
+    if(state.loaded == false)return <div>loading</div>
 
-        orderUsers(this.state.users,this.state.matches)
-        return <div>
-            <div style={{margin:'10px'}}>
-                <form className="form-inline">
-                    <div>
-                        <input ref={this.input} name="search" />
-                        <button onClick={() => {
-                            this.searchdata = this.input.current.value
-                            this.refetch()
-                        }} className="btn btn-primary" type="button">search</button>
-                    </div>
-                    
-                    
-                </form>
-            </div>
-
-            <table style={{'marginTop':'20px'}} className="table table-light table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">tourny wins</th>
-                        <th scope="col">wins</th>
-                        <th scope="col">losses</th>
-                        <th scope="col">country</th>
-                        <th scope="col">clan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.state.users.map((user,i) => {
+    return <div style={{"margin":"20px 0 0","overflowX":"auto"}}>
+        {(() => {
+            if(props.enableSearch){
+                return <div style={{margin:'10px'}}>
+                    <form className="form-inline">
+                        <div>
+                            <input value={searchdata} ref={input} onChange={(e) => {
+                                setSearchdata(e.target.value)
+                            }} name="search" placeholder='search' />
+                        </div>
+                    </form>
+                </div>
+            }
+        })()}
+        
+        <table style={{"margin":"0px"}} className={"table table-light table-bordered"  + (props.enableSearch ? '' : 'w-auto')}>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">tourny wins</th>
+                    <th scope="col">wins</th>
+                    <th scope="col">losses</th>
+                    <th scope="col">win%</th>
+                    <th scope="col">country</th>
+                    <th scope="col">clan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {(() => {
+                    return state.users.filter(user => user.username.includes(searchdata)).map((user,i) => {
                         return <tr key={i}>
-                            <td scope="row"><b>{i + 1}</b></td>
+                            <td scope="row"><b>{user.rank + 1}</b></td>
                             <td><Link to={`/profile/${user.id}`}>{user.username}</Link></td>
                             <td>{user.tournywins}</td>
                             <td>{user.wins}</td>
                             <td>{user.losses}</td>
+                            <td>{(user.wins / Math.max(user.wins + user.losses,1)) * 100}%</td>
                             <td>{user.country}</td>
                             <td>{user.clan}</td>
                         </tr>
-                    })}
-                </tbody>
-            </table>
-        </div>
-    }
+                    })
+                })()}
+            </tbody>
+        </table>
+    </div>
 }
-
-
-
-

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Leaderboard2 from './leaderbord2';
 import {get,getCustom,getHost, orderUsers} from './utils'
 // import ReactDOM from 'react-dom';
 
@@ -95,7 +96,8 @@ export default function Homepage(){
             </div>
         </div>
         <div className="col-xl-3" style={{}}>
-            <div style={{"margin":"20px 0 0","overflowX":"auto"}}>
+            <Leaderboard2></Leaderboard2>
+            {/* <div style={{"margin":"20px 0 0","overflowX":"auto"}}>
                 <table style={{"margin":"0px"}} className="w-auto table table-light table-bordered">
                     <thead>
                         <tr>
@@ -125,7 +127,7 @@ export default function Homepage(){
                         })()}
                     </tbody>
                 </table>
-            </div>
+            </div> */}
             
         </div>
     </div>

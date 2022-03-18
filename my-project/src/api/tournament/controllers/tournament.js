@@ -268,6 +268,21 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
       publicationState:'live',
     })
 
+    // var users = await this.getLeaderbordData()
+
+    //tournaments filtered and sorted by startat and get their signup count
+    //webpages top 10 sorted by updatedate
+    //sorted and top 15 users by their match wins
+    ctx.response.body = {
+      webpages:webpages,
+      tournaments:tournaments,
+      // users:users,
+      // matches:matches,
+    }
+    return
+  },
+
+  async getLeaderbordData(ctx){
     var users = await strapi.entityService.findMany(usersapi,{
     })
     var matches = await strapi.entityService.findMany(matchapi,{
@@ -279,18 +294,11 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
       }
     })
     orderUsers(users,matches)
-    users = users.slice(0,15)
-
-    //tournaments filtered and sorted by startat and get their signup count
-    //webpages top 10 sorted by updatedate
-    //sorted and top 15 users by their match wins
+    users = users.slice(0,ctx.request.body.limit ?? 15)
     ctx.response.body = {
-      webpages:webpages,
-      tournaments:tournaments,
       users:users,
-      // matches:matches,
     }
-    return
+    // return users
   },
 
   async test(ctx) {
@@ -332,5 +340,8 @@ function orderUsers(users,matches){
       return b.tournywins - a.tournywins
     }
   })
+  for(var i = 0; i < users.length;i++){
+    users[i].rank = i
+  }
   return users
 }
