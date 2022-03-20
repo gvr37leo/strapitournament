@@ -5,6 +5,10 @@ import { Link, useParams } from 'react-router-dom'
 // https://staxmanade.com/CssToReact/
 // https://www.youtube.com/watch?v=vGtVSwpOlsM  oath
 
+function updateTournamentBracket(){
+	
+}
+
 export default function Tournament(){
 
 	var [state,setState] = useState({loaded:false,isAdmin:false})
@@ -37,6 +41,16 @@ export default function Tournament(){
 				tournament:data1.data,
 			}) 
 		})
+
+		// let interval = setInterval(() => {
+		// 	if(document.hasFocus()){
+		// 		console.log('test')
+		// 	}
+		// 	//refetch tournament data
+		// },3000)
+		// return () => {
+		// 	clearInterval(interval)
+		// }
     },[])
 
     if(state.loaded == false)return <div>loading</div>
@@ -126,6 +140,7 @@ export default function Tournament(){
 						})()}
 					</div>
 					{(() => {
+						
 						return renderTree(state.tournament.attributes.matches.data.find(m => m.attributes.depth == 0),state)
 					})()}
 				</div>
@@ -168,7 +183,7 @@ function renderTree(match,state) {
 	} else {
 		return <div key={match.id} style={{"display":"inline-flex","alignItems":"center","justifyContent":"start", 'magin':match.attributes.depth == maxdepth - 2 ? '10px':''}} >
 			<div style={{"display":"flex","flexDirection":"column","alignItems":"flex-end"}}>
-				{children.map(child => renderTree(child,state))}
+				{children.sort((a,b) => a.id - b.id).map(child => renderTree(child,state))}
 			</div>
 			{renderCard(match,state)}
 		</div>
@@ -176,7 +191,18 @@ function renderTree(match,state) {
 }
 
 function renderCard(match,state) {
-	return <div key={match.id} className="matchcard" style={{background:match.attributes.scoreReported ? '#4caf50' : ''}}>
+	return <div key={match.id} className="matchcard" style={{background:(() => {
+		if(match.attributes.scoreReported){
+			return '#4caf50'
+		}else{
+			if(isLoggedIn() && (match.attributes.player1?.data?.id == getLoggedInUser()?.user?.id || match.attributes.player2?.data?.id == getLoggedInUser()?.user?.id)){
+				return 'red'
+			}else if(match.attributes.player1.data != null && match.attributes.player2.data != null){
+				return 'lime'
+			}
+			return ''
+		}
+	})()}}>
 		{(() => {
 			
 			if (isLoggedIn() && Date.now() > new Date(state.tournament.attributes.startsat)) {
@@ -210,14 +236,14 @@ function renderCard(match,state) {
 			}
 		})()}
 		<div style={{background:calcColor(match.attributes.score1,match.attributes.score2),paddingLeft:'3px'}}>
-			{match.attributes.player1?.data != null ? <span><b>{match.attributes.score1}</b>:{match.attributes.player1.data.attributes.username}</span> : 'TBD'}
+			{match.attributes.player1?.data != null ? <span><b>{match.attributes.score1}</b>:<Link style={{color:'black'}} to={`/profile/${match.attributes.player1.data.id}`}>{match.attributes.player1.data.attributes.username}</Link></span> : 'TBD'}
 		</div>
 		<div style={{background:calcColor(match.attributes.score2,match.attributes.score1),paddingLeft:'3px'}}>
-			{match.attributes.player2?.data != null ? <span><b>{match.attributes.score2}</b>:{match.attributes.player2.data.attributes.username}</span> : 'TBD'}
+			{match.attributes.player2?.data != null ? <span><b>{match.attributes.score2}</b>:<Link style={{color:'black'}} to={`/profile/${match.attributes.player2.data.id}`}>{match.attributes.player2.data.attributes.username}</Link></span> : 'TBD'}
 		</div>
 		{(() => {
 			if(state.isAdmin){
-				return <a target={'_blank'} href={`${getHost()}/admin/content-manager/collectionType/api::match.match/${match.id}`}>{match.id}</a>
+				return <a style={{color:'black'}} target={'_blank'} href={`${getHost()}/admin/content-manager/collectionType/api::match.match/${match.id}`}>{match.id}</a>
 			}
 		})()}
 	</div>
