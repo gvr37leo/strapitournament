@@ -137,7 +137,8 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
 
     var signups = tournament.tournament_signups.filter(s => s.checkedin || ctx.request.body.includeAll)
 
-    var players = signups.map(s => s.users_permissions_user)
+    var players = signups.map(s => s.users_permissions_user).filter(user => user != null)
+    shuffle(players)
     var resmatches = []
     var res = await this.generateTree(null,0,signups.length,players,{index:0},resmatches,tournamentid)
     ctx.body = resmatches
@@ -344,4 +345,16 @@ function orderUsers(users,matches){
     users[i].rank = i
   }
   return users
+}
+
+function shuffle(arr){
+  for(var i = arr.length - 1; i > 0; i--){
+    swap(arr,i,Math.floor(Math.random() * i))
+  }
+}
+
+function swap(arr,a,b){
+  var temp = arr[a]
+  arr[a] = arr[b]
+  arr[b] = temp
 }

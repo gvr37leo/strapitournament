@@ -161,7 +161,7 @@ export default function Tournament(){
 							</thead>
 							<tbody>
 								{state.tournament.attributes.tournament_signups.data.map((signup,i) => <tr key={i}>
-									<td><Link to={`/profile/${signup.attributes.users_permissions_user.data.id}`}>{signup.attributes.users_permissions_user.data.attributes.username}</Link></td>
+									<td><Link to={`/profile/${signup.attributes?.users_permissions_user?.data?.id}`}>{signup?.attributes.users_permissions_user?.data?.attributes?.username}</Link></td>
 									<td>{signup.attributes.checkedin ? "yes" : "no"}</td>
 								</tr>)}
 							</tbody>
