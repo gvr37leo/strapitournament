@@ -48,7 +48,7 @@ export default class Header extends React.Component{
                             <Link style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" to="/tournament">Tournaments</Link>
                         </li>
                         <li className="nav-item">
-                            <Link style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" to="/leaderboard">leaderboard</Link>
+                            <Link style={{"color":"#e7e7e7","textShadow":"0 0 5px black","fontWeight":"bold"}} className="nav-link" to="/leaderboard">Leaderboard</Link>
                         </li>
                         {(() => {
                             return this.state.webpages.filter(w => w.attributes.parent.data == null).map(webpage => {
@@ -80,7 +80,7 @@ export default class Header extends React.Component{
                         if(isLoggedIn()){
                         
                             return <React.Fragment>
-                                <div style={{"marginRight":"10px"}}>Welcome <a href="/member-edit"><b>{getLoggedInUser().user.username}</b></a></div>
+                                <div style={{"marginRight":"10px",color:'white'}}>Welcome <a href="/member-edit"><b>{getLoggedInUser().user.username}</b></a></div>
                                 <button onClick={() => {
                                     localStorage.removeItem('logindata')
                                     location.reload()

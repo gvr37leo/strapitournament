@@ -36,7 +36,20 @@ module.exports = {
       method: 'POST',
       path: '/getLeaderbordData',
       handler: 'tournament.getLeaderbordData',
+    },{
+      method: 'POST',
+      path: '/finalizeTournament',
+      handler: 'tournament.finalizeTournament',
+    },{
+      method: 'POST',
+      path: '/finalizeSeason',
+      handler: 'tournament.finalizeSeason',
     },
+
+
+
+
+
 
 
 

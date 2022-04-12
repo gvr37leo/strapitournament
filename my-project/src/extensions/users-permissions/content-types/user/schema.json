@@ -86,6 +86,22 @@
     },
     "country": {
       "type": "string"
+    },
+    "wins": {
+      "type": "integer",
+      "default": 0
+    },
+    "losses": {
+      "type": "integer",
+      "default": 0
+    },
+    "draws": {
+      "type": "integer",
+      "default": 0
+    },
+    "tournywins": {
+      "type": "integer",
+      "default": 0
     }
   }
 }

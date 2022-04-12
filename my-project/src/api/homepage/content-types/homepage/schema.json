@@ -76,6 +76,11 @@
       "type": "component",
       "repeatable": true,
       "component": "socialmedia.socialmedia"
+    },
+    "bottomrow": {
+      "type": "component",
+      "repeatable": true,
+      "component": "socialmedia.socialmedia"
     }
   }
 }

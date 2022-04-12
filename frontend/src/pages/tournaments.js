@@ -25,7 +25,7 @@ export default class Tournaments extends React.Component{
 		if(this.state.loaded == false)return <div>loading</div>
 
 		return <div>
-			<h1>Tournaments</h1>
+			<h1 style={{color:'white'}}>Tournaments</h1>
 			<div style={{"display":"flex","flexWrap":"wrap"}}>
 				{this.state.tournaments.map(tournament => 
 					<Link key={tournament.id} to={`/tournament/${tournament.id}`}>

@@ -13,6 +13,7 @@ var wpapi = 'api::webpage.webpage'
 //https://koajs.com/#response
 //https://koajs.com/#request
 const { createCoreController } = require('@strapi/strapi').factories;
+console.log('tournament.js')
 
 module.exports = createCoreController('api::tournament.tournament',({strapi}) => ({
   async signup(ctx){
@@ -283,23 +284,107 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
     return
   },
 
+  async finalizeTournament(ctx){
+    //get the users
+    //get the matches
+    //count the wins and losses
+    //save on the users
+    var tournamentid = ctx.request.body.tournamentid
+    var tournament = await strapi.entityService.findOne(tournamentapi, tournamentid,{
+      populate:[
+      'tournament_signups',
+      'tournament_signups.users_permissions_user',
+      'matches',
+      'matches.player1',
+      'matches.player2',
+      ],
+    })
+
+    if(tournament.includeOnLeaderboard && tournament.finished == false){
+      var users = tournament.tournament_signups.map(signup => signup.users_permissions_user)
+      var matches = tournament.matches
+      orderUsers(users,matches)
+
+      for(var user of users){
+        var res = await strapi.entityService.update(usersapi,user.id,{
+          data:{
+            wins:user.wins,
+            losses:user.losses,
+            draws:user.draws,
+            tournywins:user.tournywins,
+          },
+        })
+      }
+    }
+
+    var res = await strapi.entityService.update(tournamentapi,tournamentid,{
+      data:{
+        finished:true,
+      }
+    })
+    ctx.response.body = res
+    return
+  },
+
+  async finalizeSeason(ctx){
+    //create a new season
+    //dump all the players scores in there
+    //set all the players data to 0
+    var users = await strapi.entityService.findMany(usersapi,{
+      sort:[{tournywins:'desc'},{wins:'desc'}]
+    })
+
+    var newseason = await strapi.entityService.create('api::season.season',{
+      data:{
+        name:'new season',
+        data:users,
+      }
+    })
+
+    for(var user of users){
+      var res = await strapi.entityService.update(usersapi,user.id,{
+        data:{
+          wins:0,
+          losses:0,
+          draws:0,
+          tournywins:0,
+        },
+      })
+    }
+
+
+    ctx.response.body = newseason
+    return
+  },
+
   async getLeaderbordData(ctx){
     var users = await strapi.entityService.findMany(usersapi,{
     })
-    var matches = await strapi.entityService.findMany(matchapi,{
-      populate:[
-        'player1','player2'
-      ],
-      filters:{
-        scoreReported:true,
+
+    //only get matches belonging to active tournaments
+    try {
+      var activeTournaments = await strapi.entityService.findMany(tournamentapi,{
+        populate:[
+          'matches',
+          'matches.player1',
+          'matches.player2',
+        ],
+        filters:{
+          $and:[{startsat:{$lt:Date.now()}},{startsat:{$gt:Date.now() - 24 * 3600 * 1000}}],
+          finished:false,
+          includeOnLeaderboard:true,
+        }
+      })
+      var activematches = activeTournaments.flatMap(t => t.matches).filter(m => m.scoreReported)
+      orderUsers(users,activematches)
+      users = users.slice(0,ctx.request.body.limit ?? 16)
+      ctx.response.body = {
+        users:users,
       }
-    })
-    orderUsers(users,matches)
-    users = users.slice(0,ctx.request.body.limit ?? 15)
-    ctx.response.body = {
-      users:users,
+      return
+    } catch (error) {
+      console.log(error)
     }
-    // return users
   },
 
   async test(ctx) {
@@ -311,27 +396,37 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
 function orderUsers(users,matches){
   var userdict = {}
   for(var user of users){
-      user.wins = 0
-      user.tournywins = 0
-      user.losses = 0
-      user.draws = 0
       userdict[user.id] = user
   }
 
   for(var match of matches){
-      var istournywin = match.depth == 0 ? 1 : 0
-      if(match.score1 > match.score2){
-          userdict[match.player1.id].wins++
-          userdict[match.player1.id].tournywins += istournywin
-          userdict[match.player2.id].losses++
-      }else if(match.score2 > match.score1){
-          userdict[match.player2.id].wins++
-          userdict[match.player2.id].tournywins += istournywin
-          userdict[match.player1.id].losses++
-      }else{
-          userdict[match.player1.id].draws++
-          userdict[match.player2.id].draws++
+    if(match.scoreReported == false){
+      continue
+    }
+    var istournywin = match.depth == 0 ? 1 : 0
+    var winner = null
+    var loser = null
+    if(match.score1 > match.score2){
+      winner = userdict[match.player1?.id] ?? null
+      loser = userdict[match.player2?.id] ?? null
+    }else if(match.score2 > match.score1){
+      winner = userdict[match.player2?.id] ?? null
+      loser = userdict[match.player1?.id] ?? null
+    }else{
+      if(match.player1){
+        userdict[match.player1.id].draws++
       }
+      if(match.player2){
+        userdict[match.player2.id].draws++
+      }
+    }
+    if(winner){
+      winner.wins++
+      winner.tournywins += istournywin
+    }
+    if(loser){
+      loser.losses++
+    }
   }
 
   users.sort((a,b) => {

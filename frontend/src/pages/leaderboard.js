@@ -2,21 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {get,getCustom,orderUsers} from './utils'
 
-
+var seasondata = null
 export default function Leaderboard(props){
 
 
     var [state,setState] = React.useState({loaded:false})
     var [searchdata,setSearchdata] = useState('')
+    // var [seasondata,setSeasondata] = useState({data:[]})
     var input = React.createRef()
     var colors = ['gold','silver','#CD7F32']
+    
 
     useEffect(() => {
 
-        getCustom('getLeaderbordData',{limit:props.limit ?? 15}).then(data => {
+        Promise.all([
+            get('seasons',{}),
+            getCustom('getLeaderbordData',{limit:props.limit ?? 16})
+        ]).then(([data1,data2]) => {
+            seasondata = data1
             setState({
                 loaded:true,
-                users:data.users,
+                users:data2.users,
             })
         })
     },[])
@@ -38,6 +44,28 @@ export default function Leaderboard(props){
                 </div>
             }
         })()}
+            <select onChange={async (e) => {
+                if(e.target.value == 'current season'){
+                    var data = await getCustom('getLeaderbordData',{limit:props.limit ?? 16})
+                    setState({
+                        loaded:true,
+                        users:data.users,
+                    })
+                }else{
+                    seasondata.data[e.target.value].attributes.data.forEach((user,i) => user.rank = i)
+                    setState({
+                        loaded:true,
+                        users:seasondata.data[e.target.value].attributes.data.slice(0,props.limit ?? 16)
+                    })
+                }
+            }}>
+                <option>current season</option>
+                {(() => {
+                    return seasondata.data.map((season,i) => {
+                        return <option key={season.id} value={i}>{season.attributes.name}</option>
+                    })
+                })()}
+            </select>
         <style>{
             `td{
                 background-color:transparent !important;

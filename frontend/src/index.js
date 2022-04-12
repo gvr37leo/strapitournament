@@ -12,7 +12,7 @@ import {get, getHost} from './pages/utils'
 import Discord from './components/discord';
 import Leaderboard from './pages/leaderboard';
 
-get('homepage',{populate:['pagebackground','banner','logo','navigationbar','leaderboardbackground','background','socialmedia.image']}).then((data => {
+get('homepage',{populate:['pagebackground','banner','logo','navigationbar','leaderboardbackground','background','socialmedia.image','bottomrow','bottomrow.image']}).then((data => {
   window.homepagedata = data
   document.body.style = `background-attachment : fixed; background-position:center; background-size:cover; background-image:url('${getHost()+homepagedata.data.attributes.background.data.attributes.url}')`
   ReactDOM.render(

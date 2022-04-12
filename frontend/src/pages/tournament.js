@@ -93,7 +93,7 @@ export default function Tournament(){
 									})
 								}} className="btn btn-primary">generate bracket</button>
 
-								<button style={{marginLeft:'20px'}} type="button" onClick={(e) => {
+								{/* <button style={{marginLeft:'20px'}} type="button" onClick={(e) => {
 									e.target.disabled = true
 									getCustom('generatebracket',{
 										tournamentid:state.tournament.id,
@@ -102,8 +102,28 @@ export default function Tournament(){
 										e.target.disabled = false
 										location.reload()
 									})
-								}} className="btn btn-primary">generate bracket all</button>
-							
+								}} className="btn btn-primary">generate bracket all</button> */}
+								{(() => {
+									if(state.tournament.attributes.finished == false){
+										return <button style={{marginLeft:'20px'}} type="button" onClick={(e) => {
+											e.target.disabled = true
+											getCustom('finalizeTournament',{
+												tournamentid:state.tournament.id,
+											}).finally(() => {
+												e.target.disabled = false
+												location.reload()
+											})
+										}} className="btn btn-primary">finalize tournament</button>
+									}
+								})()}
+
+								<button style={{marginLeft:'20px'}} type="button" onClick={(e) => {
+									e.target.disabled = true
+									getCustom('finalizeSeason',{}).finally(() => {
+										e.target.disabled = false
+										location.reload()
+									})
+								}} className="btn btn-primary">finalize season</button>
 							</div>
 						}
 					})()}
