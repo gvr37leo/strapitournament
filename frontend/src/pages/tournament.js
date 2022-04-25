@@ -117,13 +117,13 @@ export default function Tournament(){
 									}
 								})()}
 
-								<button style={{marginLeft:'20px'}} type="button" onClick={(e) => {
+								<button style={{marginLeft:'200px'}} type="button" onClick={(e) => {
 									e.target.disabled = true
 									getCustom('finalizeSeason',{}).finally(() => {
 										e.target.disabled = false
 										location.reload()
 									})
-								}} className="btn btn-primary">finalize season</button>
+								}} className="btn btn-warning">finalize season</button>
 							</div>
 						}
 					})()}

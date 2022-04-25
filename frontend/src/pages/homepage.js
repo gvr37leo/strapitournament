@@ -27,7 +27,7 @@ export default function Homepage(){
                 <div className="col-3 d-none d-xl-block">
                     <img style={{"width":"100%","padding":"20px 0px 10px"}} src={getHost() + state?.homepage?.attributes?.banner?.data?.attributes?.url} />
                 </div>
-                <div className="col-9">
+                <div className="col">
                     <div className="row" style={{"padding":"20px 0px 10px"}}>
                         <div className="col">
                             <Carousel id="carousel1" itemcount={1} carouselitems={state.webpages.map(wp => {

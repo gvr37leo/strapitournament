@@ -4,6 +4,9 @@ export async function get(type,parameters){
     // var res = await fetch(`http://64.225.54.10:1337/api/${type + querystring}`)
     var res = await fetch(`${getHost()}/api/${type + '?' + querystring}`)
     var data = await res.json()
+    if(data?.error?.status >= 400){
+        localStorage.removeItem('logindata')
+    }
     return data
 }
 
@@ -15,11 +18,18 @@ export async function getCustom(url,body){
     if(isLoggedIn()){
         headers.Authorization = `Bearer ${getLoggedInUser().jwt}`
     }
-    return fetch(`${getHost()}/api/${url}`,{
+
+    var data = await fetch(`${getHost()}/api/${url}`,{
         method:'POST',
         headers: headers,
         body:JSON.stringify(body)
     }).then(res => res.json())
+
+    if(data?.error?.status >= 400){
+        localStorage.removeItem('logindata')
+    }
+    
+    return data
 }
 
 export function isLoggedIn(){

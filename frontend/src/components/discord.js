@@ -24,7 +24,7 @@ export default class Discord extends React.Component{
         .then(res => res.json())
         .then(data => {
             var jsondata = JSON.stringify(data)
-            if(data?.status >= 300){
+            if(data?.error?.status >= 300){
                 alert(`something went wrong, please leave a message at the turin multiplayer discord. Errormessage ${data}`)
             }else{
                 localStorage.setItem('logindata',jsondata)
