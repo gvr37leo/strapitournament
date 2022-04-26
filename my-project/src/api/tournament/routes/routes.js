@@ -44,6 +44,10 @@ module.exports = {
       method: 'POST',
       path: '/finalizeSeason',
       handler: 'tournament.finalizeSeason',
+    },{
+      method: 'POST',
+      path: '/cleanup',
+      handler: 'tournament.cleanup',
     },
 
 

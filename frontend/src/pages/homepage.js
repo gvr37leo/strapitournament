@@ -67,7 +67,7 @@ export default function Homepage(){
                             <Carousel id={'carousel2'} itemcount={3} carouselitems={state.homepage.attributes.bottomrow.map(item => {
                                 var imageurl = item?.image?.data?.attributes?.url
                                 return {
-                                    link:'',
+                                    link:imageurl == null ? '/Warhammer.jpg' : getHost() + imageurl,
                                     title:item.title,
                                     imageurl:imageurl == null ? '/Warhammer.jpg' : getHost() + imageurl,
                                 }

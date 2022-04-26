@@ -326,6 +326,35 @@ module.exports = createCoreController('api::tournament.tournament',({strapi}) =>
     return
   },
 
+  async cleanup(ctx){
+
+    var users = await strapi.entityService.findMany(usersapi,{
+      sort:[{tournywins:'desc'},{wins:'desc'}]
+    })
+
+    for(var user of users){
+      var newdata = {}
+      if(user.wins == null){
+        newdata.wins = 0
+      }
+      if(user.losses == null){
+        newdata.losses = 0
+      }
+      if(user.draws == null){
+        newdata.draws = 0
+      }
+      if(user.tournywins == null){
+        newdata.tournywins = 0
+      }
+      var res = await strapi.entityService.update(usersapi,user.id,{
+        data:newdata,
+      })
+    }
+
+    ctx.reponse.body = {}
+    return
+  },
+
   async finalizeSeason(ctx){
     //create a new season
     //dump all the players scores in there

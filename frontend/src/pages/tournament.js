@@ -104,7 +104,7 @@ export default function Tournament(){
 									})
 								}} className="btn btn-primary">generate bracket all</button> */}
 								{(() => {
-									if(state.tournament.attributes.finished == false){
+									if(state.tournament.attributes.finished == false && state.tournament.attributes.ExternaltournamentLink == null){
 										return <button style={{marginLeft:'20px'}} type="button" onClick={(e) => {
 											e.target.disabled = true
 											getCustom('finalizeTournament',{
@@ -124,6 +124,13 @@ export default function Tournament(){
 										location.reload()
 									})
 								}} className="btn btn-warning">finalize season</button>
+								<button type="button" onClick={(e) => {
+									e.target.disabled = true
+									getCustom('cleanup',{}).finally(() => {
+										e.target.disabled = false
+										location.reload()
+									})
+								}} className="btn btn-warning">cleanup users</button>
 							</div>
 						}
 					})()}
