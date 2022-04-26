@@ -57,19 +57,4 @@ export default function Carousel(props){
             <span className="visually-hidden">Next</span>
         </button>
         </div>
-
-
-    return <div id={props.id} className="owl-carousel owl-theme">
-        {props.carouselitems.map((carouselitem,i) => {
-            return <div key={i} style={{"maxHeight":"300px"}}>
-            <Link to={carouselitem.link}>
-                {/* <img style={{"maxHeight":"300px","objectFit":"cover","borderRadius":"3px"}} src={carouselitem.imageurl } className="d-block w-100" alt="..."/> */}
-                <img style={{"objectFit":"cover","borderRadius":"3px"}} src={carouselitem.imageurl } className="" alt="..."/>
-                <div className="carousel-caption d-none d-md-block">
-                    <h5 style={{"textShadow":"0px 0px 6px #000000"}}>{carouselitem.title}</h5>
-                </div>
-            </Link>
-        </div>
-        })}
-    </div>
 }
