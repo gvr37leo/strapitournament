@@ -124,13 +124,13 @@ export default function Tournament(){
 										location.reload()
 									})
 								}} className="btn btn-warning">finalize season</button>
-								<button type="button" onClick={(e) => {
+								{/* <button type="button" onClick={(e) => {
 									e.target.disabled = true
 									getCustom('cleanup',{}).finally(() => {
 										e.target.disabled = false
 										location.reload()
 									})
-								}} className="btn btn-warning">cleanup users</button>
+								}} className="btn btn-warning">cleanup users</button> */}
 							</div>
 						}
 					})()}

@@ -35,9 +35,11 @@ export default function Carousel(props){
         <div className="carousel-inner">
             {
                 props.carouselitems.map((item,i) => {
-                    return <div key={i} style={{"maxHeight":"300px"}} className={`carousel-item  ${i == 0 ? 'active' : ''}`}>
+                    // "maxHeight":"300px"
+                    return <div key={i} style={{}} className={`carousel-item  ${i == 0 ? 'active' : ''}`}>
                         <Link to={item.link}>
-                            <img style={{"maxHeight":"300px","objectFit":"cover","borderRadius":"3px"}} src={item.imageurl} className="d-block w-100" alt="..."/>
+                            {/* "maxHeight":"300px" */}
+                            <img style={{"objectFit":"cover","borderRadius":"3px"}} src={item.imageurl} className="d-block w-100" alt="..."/>
                             <div className="carousel-caption d-none d-md-block">
                                 <h5 style={{"textShadow":"0px 0px 6px #000000"}}>{item.title}</h5>
                             </div>
