@@ -72,7 +72,7 @@ export default function Leaderboard(props){
                     })
                 })()}
             </select>
-            <img style={{flexGrow:1,height:'24px'}} src={getHost() + seasonimageurl}></img>
+            <img style={{height:'24px'}} src={getHost() + seasonimageurl}></img>
         </div>
         <style>{
             `td{
