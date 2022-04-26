@@ -62,12 +62,12 @@ export default function Homepage(){
                             })()}
                         </div>
                     </div>
-                    <div className='row' style={{marginTop:'15px'}}>
+                    <div className='row' style={{marginTop:'15px',marginBottom:'100px'}}>
                         <div className='col'>
                             <Carousel id={'carousel2'} itemcount={3} carouselitems={state.homepage.attributes.bottomrow.map(item => {
                                 var imageurl = item?.image?.data?.attributes?.url
                                 return {
-                                    link:imageurl == null ? '/Warhammer.jpg' : imageurl,
+                                    link:imageurl == null ? '/Warhammer.jpg' : getHost() + imageurl,
                                     title:item.title,
                                     imageurl:imageurl == null ? '/Warhammer.jpg' : getHost() + imageurl,
                                 }
