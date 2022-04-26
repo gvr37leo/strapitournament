@@ -12,7 +12,7 @@ export default class Tournaments extends React.Component{
 	}
 
 	componentDidMount(){
-		get('tournaments',{populate:['image'],sort:['startsat:desc']}).then(data => {
+		get('tournaments',{populate:['image'],sort:['startsat:desc'],pagination:{page:1,pageSize:300}}).then(data => {
 
 			this.setState({
 				loaded:true,

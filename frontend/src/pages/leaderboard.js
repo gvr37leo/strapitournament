@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {get,getCustom,orderUsers} from './utils'
+import {get,getCustom,getHost,orderUsers} from './utils'
 
 var seasondata = null
+var seasonimageurl = ''
 export default function Leaderboard(props){
 
 
@@ -16,10 +17,12 @@ export default function Leaderboard(props){
     useEffect(() => {
 
         Promise.all([
-            get('seasons',{}),
+            get('seasons',{populate:['image']}),
             getCustom('getLeaderbordData',{limit:props.limit ?? 16})
         ]).then(([data1,data2]) => {
             seasondata = data1
+            seasonimageurl = homepagedata?.data?.attributes?.seasonimage?.data?.attributes?.url
+            
             setState({
                 loaded:true,
                 users:data2.users,
@@ -44,15 +47,18 @@ export default function Leaderboard(props){
                 </div>
             }
         })()}
+        <div style={{display:'flex', alignItems:'flex-end'}}>
             <select onChange={async (e) => {
                 if(e.target.value == 'current season'){
                     var data = await getCustom('getLeaderbordData',{limit:props.limit ?? 16})
+                    seasonimageurl = homepagedata?.data?.attributes?.seasonimage?.data?.attributes?.url
                     setState({
                         loaded:true,
                         users:data.users,
                     })
                 }else{
                     seasondata.data[e.target.value].attributes.data.forEach((user,i) => user.rank = i)
+                    seasonimageurl = seasondata.data[e.target.value].attributes?.image?.data?.attributes.url
                     setState({
                         loaded:true,
                         users:seasondata.data[e.target.value].attributes.data.slice(0,props.limit ?? 16)
@@ -66,6 +72,8 @@ export default function Leaderboard(props){
                     })
                 })()}
             </select>
+            <img style={{flexGrow:1,height:'24px'}} src={getHost() + seasonimageurl}></img>
+        </div>
         <style>{
             `td{
                 background-color:transparent !important;
