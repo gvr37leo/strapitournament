@@ -5,25 +5,6 @@ import {get,getCustom,getHost, orderUsers} from './utils'
 
 export default function Carousel(props){
 
-    // props.carouselitems 
-    // {
-    //     link
-    //     title
-    //     imageurl
-    // }
-
-    // useEffect(() => {
-    //     $('#' + props.id).owlCarousel({
-    //         loop:true,
-    //         margin:10,
-    //         items:props.itemcount ?? 1,
-    //         // autoplay:true,
-    //         autoplayTimeout:5000,
-    //         autoplayHoverPause:true,
-    //         nav:false,
-    //     })
-    // },[])
-
     return <div style={{"boxShadow":"0px 8px 8px 5px #0000006b"}} id={props.id} className="carousel slide" data-bs-ride="carousel">
         <div className="carousel-indicators">
             {

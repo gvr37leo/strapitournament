@@ -64,7 +64,7 @@ export default function Homepage(){
                     </div>
                     <div className='row' style={{marginTop:'15px',marginBottom:'100px'}}>
                         <div className='col'>
-                            <Carousel id={'carousel2'} itemcount={3} carouselitems={state.homepage.attributes.bottomrow.map(item => {
+                            <Carousel id={'carousel2'} carouselitems={state.homepage.attributes.bottomrow.slice(-15).map(item => {
                                 var imageurl = item?.image?.data?.attributes?.url
                                 return {
                                     link:'',
